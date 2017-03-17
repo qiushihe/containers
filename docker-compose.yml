@@ -1,0 +1,42 @@
+version: "2"
+services:
+  mysql-server:
+    image: qiushihe/mysql-server
+    build: ./mysql-server
+    volumes:
+      - ./volumes/mysql-server:/mysql-data
+    environment:
+      MYSQL_SERVER_ROOT_PASSWORD: "changeme"
+      MYSQL_SERVER_USER_1: "lala1"
+      MYSQL_SERVER_PASSWORD_1: "lala1pass"
+  web-server-lala1:
+    image: qiushihe/web-server
+    build: ./web-server
+    volumes:
+      - ./volumes/lala1:/web-data
+    links:
+      - mysql-server
+  minio-server-lala1:
+    image: qiushihe/minio-server
+    build: ./minio-server
+    volumes:
+      - ./volumes/lala1:/minio-data
+    environment:
+      MINIO_SERVER_ACCESS_KEY: "accesskey1"
+      MINIO_SERVER_SECRET_KEY: "secretkey1"
+  domain-proxy:
+    image: qiushihe/domain-proxy
+    build: ./domain-proxy
+    ports:
+      - "8080:8080"
+      - "9000:9000"
+    links:
+      - web-server-lala1
+      - minio-server-lala1
+    environment:
+      DOMAIN_PROXY_PORT_1: "8080"
+      DOMAIN_PROXY_PORT_1_DOMAIN_1: "lala1.com"
+      DOMAIN_PROXY_PORT_1_DESTINATION_1: "web-server-lala1:80"
+      DOMAIN_PROXY_PORT_2: "9000"
+      DOMAIN_PROXY_PORT_2_DOMAIN_1: "lala1.com"
+      DOMAIN_PROXY_PORT_2_DESTINATION_1: "minio-server-lala1:9000"

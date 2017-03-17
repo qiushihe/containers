@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web-proxy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: web-proxy
+    spec:
+      containers:
+      - name: web-proxy
+        image: qiushihe/web-proxy:1.0.0
+        env:
+        - name: WEB_PROXY_HOSTS_COUNT
+          value: "1"
+        - name: WEB_PROXY_HOST_1
+          value: web-1|test-web-1.com|web-server-1:80

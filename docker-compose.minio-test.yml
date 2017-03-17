@@ -1,0 +1,32 @@
+version: "2"
+services:
+  minio-server-lala1:
+    image: qiushihe/minio-server
+    build: ./minio-server
+    volumes:
+      - ./volumes/lala1:/minio-data
+    environment:
+      MINIO_SERVER_ACCESS_KEY: "accesskey1"
+      MINIO_SERVER_SECRET_KEY: "secretkey1"
+  minio-server-lala2:
+    image: qiushihe/minio-server
+    build: ./minio-server
+    volumes:
+      - ./volumes/lala2:/minio-data
+    environment:
+      MINIO_SERVER_ACCESS_KEY: "accesskey2"
+      MINIO_SERVER_SECRET_KEY: "secretkey2"
+  domain-proxy:
+    image: qiushihe/domain-proxy
+    build: ./domain-proxy
+    ports:
+      - "9000:9000"
+    links:
+      - minio-server-lala1
+      - minio-server-lala2
+    environment:
+      DOMAIN_PROXY_PORT_1: "9000"
+      DOMAIN_PROXY_PORT_1_DOMAIN_1: "lala1.com"
+      DOMAIN_PROXY_PORT_1_DESTINATION_1: "minio-server-lala1:9000"
+      DOMAIN_PROXY_PORT_1_DOMAIN_2: "lala2.com"
+      DOMAIN_PROXY_PORT_1_DESTINATION_2: "minio-server-lala2:9000"
