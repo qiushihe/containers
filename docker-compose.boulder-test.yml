@@ -1,0 +1,10 @@
+version: "2"
+services:
+  boulder-server:
+    image: qiushihe/boulder-server
+    build: ./boulder-server
+    links:
+      - boulder-server-client:boulder-test.lala.com
+  boulder-server-client:
+    image: qiushihe/boulder-server-client
+    build: ./boulder-server-client

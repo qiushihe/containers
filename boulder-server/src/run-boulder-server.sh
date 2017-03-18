@@ -14,6 +14,10 @@ wait_tcp_port() {
 export PKCS11_PROXY_SOCKET="tcp://boulder-hsm:5657"
 # export FAKE_DNS="127.0.0.1"
 
+clientIp=$(getent hosts boulder-server-client | awk '{ print $1 }')
+echo "!!! IP for boulder-server-client: $clientIp"
+export FAKE_DNS="$clientIp"
+
 rm -f /var/run/rsyslogd.pid
 service rsyslog start
 echo "!!! Started rsyslog service"
