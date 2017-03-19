@@ -14,3 +14,6 @@ services:
   boulder-server-client:
     image: qiushihe/boulder-server-client
     build: ./boulder-server-client
+    ports:
+      - "8080:80"
+      - "8443:443"
