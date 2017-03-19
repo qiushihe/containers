@@ -19,6 +19,6 @@ fi
 #   --register-unsafely-without-email \
 #   --debug \
 #   -vv \
-#   certonly -a standalone -d boulder-test.lala.com
+#   certonly -a standalone -d test-1.domain.com
 
 nginx

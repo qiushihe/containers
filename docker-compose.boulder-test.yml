@@ -3,8 +3,14 @@ services:
   boulder-server:
     image: qiushihe/boulder-server
     build: ./boulder-server
-    links:
-      - boulder-server-client:boulder-test.lala.com
+    # Set depends_on on the test client so the test client will be started before the server.
+    # This way when the server starts, it can detect the client's IP and then the server can modify
+    # its own /etc/hosts to point all the test domains to the client's IP.
+    depends_on:
+      - boulder-server-client
+    environment:
+      BOULDER_SERVER_FAKE_DNS_HOST: "boulder-server-client"
+      BOULDER_SERVER_FAKE_DNS_DOMAIN_1: "test-1.domain.com"
   boulder-server-client:
     image: qiushihe/boulder-server-client
     build: ./boulder-server-client

@@ -12,11 +12,24 @@ wait_tcp_port() {
 }
 
 export PKCS11_PROXY_SOCKET="tcp://boulder-hsm:5657"
-# export FAKE_DNS="127.0.0.1"
+# clientIp=$(getent hosts boulder-server-client | awk '{ print $1 }')
+# echo "!!! IP for boulder-server-client: $clientIp"
+# export FAKE_DNS="$clientIp"
 
-clientIp=$(getent hosts boulder-server-client | awk '{ print $1 }')
-echo "!!! IP for boulder-server-client: $clientIp"
-export FAKE_DNS="$clientIp"
+fakeDnsHost=$BOULDER_SERVER_FAKE_DNS_HOST
+if [ -n "$fakeDnsHost" ]; then
+  fakeDnsHostIp=$(getent hosts $fakeDnsHost | awk '{ print $1 }')
+  export FAKE_DNS="$fakeDnsHostIp"
+  echo "!!! Fake DNS Host: $fakeDnsHost ($fakeDnsHostIp)"
+
+  FAKE_DNS_DOMAINS=$(compgen -A variable | grep -e "^BOULDER_SERVER_FAKE_DNS_DOMAIN_[^_]\+$")
+  for domain in $FAKE_DNS_DOMAINS; do
+    domainIndex=${domain##*_}
+    domainName=${!domain}
+    echo "$fakeDnsHostIp $domainName" >> /etc/hosts
+    echo "!!! Added to /etc/hosts: $fakeDnsHostIp $domainName"
+  done
+fi
 
 rm -f /var/run/rsyslogd.pid
 service rsyslog start
