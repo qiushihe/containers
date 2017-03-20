@@ -2,7 +2,7 @@ FROM alpine:3.5
 
 RUN apk --update upgrade \
   && apk add bash \
-  && apk add nginx \
+  && apk add nginx certbot \
   && rm -rf /var/cache/apk/*
 
 # Web folder

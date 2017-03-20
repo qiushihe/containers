@@ -6,26 +6,25 @@ wait_tcp_port() {
   local host="$1" port="$2"
   while ! exec 6<>/dev/tcp/$host/$port; do
     echo "$(date) - still trying to connect to $host:$port"
-    sleep 1
+    sleep 5
   done
   exec 6>&-
 }
 
-export PKCS11_PROXY_SOCKET="tcp://boulder-hsm:5657"
-# export FAKE_DNS="127.0.0.1"
+fakeDnsHost=$BOULDER_SERVER_FAKE_DNS_HOST
+if [ -n "$fakeDnsHost" ]; then
+  fakeDnsHostIp=$(getent hosts $fakeDnsHost | awk '{ print $1 }')
+  export FAKE_DNS="$fakeDnsHostIp"
+  echo "!!! Fake DNS Host: $fakeDnsHost ($fakeDnsHostIp)"
 
-rm -f /var/run/rsyslogd.pid
-service rsyslog start
-echo "!!! Started rsyslog service"
-
-service rabbitmq-server start
-echo "!!! Started RabbitMQ server"
-
-service mysql start
-echo "!!! Started MySQL server"
-
-/usr/local/bin/pkcs11-daemon /usr/lib/softhsm/libsofthsm.so &
-echo "!!! Started pkcs11 daemon"
+  FAKE_DNS_DOMAINS=$(compgen -A variable | grep -e "^BOULDER_SERVER_FAKE_DNS_DOMAIN_[^_]\+$")
+  for domain in $FAKE_DNS_DOMAINS; do
+    domainIndex=${domain##*_}
+    domainName=${!domain}
+    echo "$fakeDnsHostIp $domainName" >> /etc/hosts
+    echo "!!! Added to /etc/hosts: $fakeDnsHostIp $domainName"
+  done
+fi
 
 cat <<EOF >> /etc/hosts
 127.0.0.1 sa.boulder ra.boulder wfe.boulder ca.boulder va.boulder publisher.boulder ocsp-updater.boulder admin-revoker.boulder
@@ -34,25 +33,31 @@ cat <<EOF >> /etc/hosts
 EOF
 echo "!!! Patched /etc/hosts"
 
+export PKCS11_PROXY_SOCKET="tcp://boulder-hsm:5657"
+
+rm -f /var/run/rsyslogd.pid
+service rsyslog start
+service rabbitmq-server start
+service mysql start
+/usr/local/bin/pkcs11-daemon /usr/lib/softhsm/libsofthsm.so &
+
 wait_tcp_port boulder-mysql 3306
-echo "!!! MySQL ready"
-
 wait_tcp_port boulder-rabbitmq 5672
-echo "!!! MySQL RabbitMQ ready"
+wait_tcp_port boulder-hsm 5657
+echo "!!! MySQL, RabbitMQ and HSM are ready"
 
-# create the database
+# Setup MySQL
 MYSQL_CONTAINER=1 ./test/create_db.sh
 echo "!!! Done MySQL setup"
 
-# Set up rabbitmq exchange
+# Set up RabbitMQ
 rabbitmq-setup -server amqp://boulder-rabbitmq
 echo "!!! Done RabbitMQ setup"
 
-wait_tcp_port boulder-hsm 5657
-echo "!!! HSM ready"
-
+# Import keys
 ./test/make-softhsm.sh
 export SOFTHSM_CONF=/go/src/github.com/letsencrypt/boulder/test/softhsm.conf
+echo "!!! Done SoftHSM setup"
 
 # For some reason we only have to
 # patch test/test-ca.key-pkcs11.json and not test-root.key-pkcs11.json
@@ -74,12 +79,14 @@ pkcs11-tool --module=/usr/lib/softhsm/libsofthsm.so --type privkey \
   --write-object ./test/test-root.key.der
 echo "!!! Added root key"
 
+# Create Virtual Env
 virtualenv venv
 
 set +o nounset
 source venv/bin/activate
 set -o nounset
 
+# Install more dependencies
 pip install pyparsing appdirs
 pip install -r test/requirements.txt
 pip install -e /certbot/acme
