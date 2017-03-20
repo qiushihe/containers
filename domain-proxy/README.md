@@ -2,6 +2,7 @@
 
 ```
 $ ./docker-do.sh rebuild domain-proxy qiushihe/domain-proxy ./domain-proxy \
+  --cap-add NET_ADMIN \
   -p 9000:9000 \
   -e 'DOMAIN_PROXY_FE_1="domain-one.com:9000"' \
   -e 'DOMAIN_PROXY_BE_1="destination.one:9001"' \

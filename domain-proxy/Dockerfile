@@ -10,8 +10,8 @@ RUN rm -fr /nginx-configs && mkdir /nginx-configs
 RUN rm -fr /run/nginx && mkdir -p /run/nginx
 RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.original
 COPY src/nginx.conf /etc/nginx/nginx.conf
-COPY src/rebuild-proxy-configs.sh /rebuild-proxy-configs.sh
-RUN chmod +x /rebuild-proxy-configs.sh
+COPY src/create-proxy-config.sh /create-proxy-config.sh
+RUN chmod +x /create-proxy-config.sh
 
 # Supervisor config
 COPY src/supervisord.conf /supervisord.conf
