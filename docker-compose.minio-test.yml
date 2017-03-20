@@ -1,5 +1,17 @@
 version: "2"
 services:
+  domain-proxy:
+    image: qiushihe/domain-proxy
+    build: ./domain-proxy
+    ports:
+      - "9000:9000"
+    cap_add:
+      - NET_ADMIN
+    environment:
+      DOMAIN_PROXY_FE_1: "lala1.com:9000"
+      DOMAIN_PROXY_BE_1: "minio-server-lala1:9000"
+      DOMAIN_PROXY_FE_2: "lala2.com:9000"
+      DOMAIN_PROXY_BE_2: "minio-server-lala2:9000"
   minio-server-lala1:
     image: qiushihe/minio-server
     build: ./minio-server
@@ -16,17 +28,3 @@ services:
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey2"
       MINIO_SERVER_SECRET_KEY: "secretkey2"
-  domain-proxy:
-    image: qiushihe/domain-proxy
-    build: ./domain-proxy
-    ports:
-      - "9000:9000"
-    links:
-      - minio-server-lala1
-      - minio-server-lala2
-    environment:
-      DOMAIN_PROXY_PORT_1: "9000"
-      DOMAIN_PROXY_PORT_1_DOMAIN_1: "lala1.com"
-      DOMAIN_PROXY_PORT_1_DESTINATION_1: "minio-server-lala1:9000"
-      DOMAIN_PROXY_PORT_1_DOMAIN_2: "lala2.com"
-      DOMAIN_PROXY_PORT_1_DESTINATION_2: "minio-server-lala2:9000"

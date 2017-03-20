@@ -1,5 +1,18 @@
 version: "2"
 services:
+  domain-proxy:
+    image: qiushihe/domain-proxy
+    build: ./domain-proxy
+    ports:
+      - "8080:80"
+      - "9000:9000"
+    cap_add:
+      - NET_ADMIN
+    environment:
+      DOMAIN_PROXY_FE_1: "lala1.com:80"
+      DOMAIN_PROXY_BE_1: "web-server-lala1:80"
+      DOMAIN_PROXY_FE_2: "lala1.com:9000"
+      DOMAIN_PROXY_BE_2: "minio-server-lala1:9000"
   mysql-server:
     image: qiushihe/mysql-server
     build: ./mysql-server
@@ -24,19 +37,3 @@ services:
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey1"
       MINIO_SERVER_SECRET_KEY: "secretkey1"
-  domain-proxy:
-    image: qiushihe/domain-proxy
-    build: ./domain-proxy
-    ports:
-      - "8080:8080"
-      - "9000:9000"
-    links:
-      - web-server-lala1
-      - minio-server-lala1
-    environment:
-      DOMAIN_PROXY_PORT_1: "8080"
-      DOMAIN_PROXY_PORT_1_DOMAIN_1: "lala1.com"
-      DOMAIN_PROXY_PORT_1_DESTINATION_1: "web-server-lala1:80"
-      DOMAIN_PROXY_PORT_2: "9000"
-      DOMAIN_PROXY_PORT_2_DOMAIN_1: "lala1.com"
-      DOMAIN_PROXY_PORT_2_DESTINATION_1: "minio-server-lala1:9000"
