@@ -2,22 +2,24 @@ FROM alpine:3.5
 
 RUN apk --update upgrade \
   && apk add bash \
-  && apk add haproxy \
+  && apk add supervisor nginx dnsmasq \
   && rm -rf /var/cache/apk/*
 
-# Setup haproxy
-RUN rm -fvr /run/haproxy
-RUN mkdir /run/haproxy
-RUN chown -R haproxy:haproxy /run/haproxy
+# Setup Nginx
+RUN rm -fr /nginx-configs && mkdir /nginx-configs
+RUN rm -fr /run/nginx && mkdir -p /run/nginx
+RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.original
+COPY src/nginx.conf /etc/nginx/nginx.conf
+COPY src/rebuild-proxy-configs.sh /rebuild-proxy-configs.sh
+RUN chmod +x /rebuild-proxy-configs.sh
 
-COPY src/haproxy.cfg /etc/haproxy/haproxy.original.cfg
+# Supervisor config
+COPY src/supervisord.conf /supervisord.conf
 
-COPY src/generate-haproxy-config.sh /generate-haproxy-config.sh
-RUN chmod +x /generate-haproxy-config.sh
-
+# Server script
 COPY src/run-domain-proxy.sh /run-domain-proxy.sh
 RUN chmod +x /run-domain-proxy.sh
 
-EXPOSE 9000
+EXPOSE 80 443
 
 ENTRYPOINT /run-domain-proxy.sh
