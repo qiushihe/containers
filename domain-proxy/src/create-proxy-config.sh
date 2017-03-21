@@ -33,6 +33,3 @@ server {
   }
 }
 EOF
-
-echo "Wrote to $configFile:"
-cat $configFile

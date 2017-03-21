@@ -3,6 +3,7 @@ FROM alpine:3.5
 RUN apk --update upgrade \
   && apk add bash \
   && apk add supervisor nginx dnsmasq \
+  && apk add wget openssl \
   && rm -rf /var/cache/apk/*
 
 # Setup Nginx
@@ -12,6 +13,16 @@ RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.original
 COPY src/nginx.conf /etc/nginx/nginx.conf
 COPY src/create-proxy-config.sh /create-proxy-config.sh
 RUN chmod +x /create-proxy-config.sh
+
+# Self-signed certificate generator
+COPY src/create-self-signed-cert.sh /create-self-signed-cert.sh
+RUN wget -q --no-check-certificate -O /generate-certs \
+  https://raw.githubusercontent.com/paulczar/omgwtfssl/master/generate-certs
+RUN chmod +x /create-self-signed-cert.sh
+RUN chmod +x /generate-certs
+
+# Certificate folder
+RUN rm -fr /certs && mkdir /certs
 
 # Supervisor config
 COPY src/supervisord.conf /supervisord.conf
