@@ -13,7 +13,7 @@ bePort="${beUrlParts[1]}"
 
 sslOptions=""
 if [ -n "$sslDir" ]; then
-sslOptions="ssl on; ssl_certificate $sslDir/cert.pem; ssl_certificate_key $sslDir/key.pem;"
+sslOptions="ssl on; ssl_certificate $sslDir/fullchain.pem; ssl_certificate_key $sslDir/key.pem;"
 fi
 
 configFile="/nginx-configs/fe-$feHost-$fePort.conf"
