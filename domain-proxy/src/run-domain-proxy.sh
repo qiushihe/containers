@@ -8,18 +8,20 @@ for fe in $DOMAIN_FES; do
   be=DOMAIN_PROXY_BE_${feIndex}
   beUrl=${!be}
 
-  # Create proxy config
-  /create-proxy-config.sh $feUrl $beUrl
-  echo "!!! Created proxy config for $feUrl -> $beUrl"
-
-  # Create certificate
+  # Create certificate for port 443 hosts
   IFS=':' read -ra feUrlParts <<< "$feUrl"
   feHost="${feUrlParts[0]}"
   fePort="${feUrlParts[1]}"
+  feSsl=""
   if [ "$fePort" == "443" ] && [ ! -d "/certs/$feHost" ]; then
     /create-self-signed-cert.sh $feHost
+    feSsl="/certs/$feHost"
     echo "!!! Created self-signed certificate for $feHost"
   fi
+
+  # Create proxy config
+  /create-proxy-config.sh $feUrl $beUrl $feSsl
+  echo "!!! Created proxy config for $feUrl -> $beUrl"
 done
 
 echo "!!! Starting Domain Proxy"

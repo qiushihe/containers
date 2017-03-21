@@ -5,24 +5,29 @@ services:
     build: ./domain-proxy
     ports:
       - "8080:80"
+      - "8443:443"
     cap_add:
       - NET_ADMIN
     environment:
-      DOMAIN_PROXY_FE_1: "domain-1.test.com:80"
+      DOMAIN_PROXY_FE_1: "lala1.com:80"
       DOMAIN_PROXY_BE_1: "web-server-1:80"
-      DOMAIN_PROXY_FE_2: "domain-2.test.com:80"
-      DOMAIN_PROXY_BE_2: "web-server-2:80"
+      DOMAIN_PROXY_FE_2: "lala1.com:443"
+      DOMAIN_PROXY_BE_2: "web-server-1:80"
+      DOMAIN_PROXY_FE_3: "lala2.com:80"
+      DOMAIN_PROXY_BE_3: "web-server-2:80"
+      DOMAIN_PROXY_FE_4: "lala2.com:443"
+      DOMAIN_PROXY_BE_4: "web-server-2:80"
   web-server-1:
     image: qiushihe/web-server
     build: ./web-server
     ports:
       - "8081:80"
     volumes:
-      - ./volumes/web1:/web-data
+      - ./volumes/lala1:/web-data
   web-server-2:
     image: qiushihe/web-server
     build: ./web-server
     ports:
       - "8082:80"
     volumes:
-      - ./volumes/web2:/web-data
+      - ./volumes/lala2:/web-data
