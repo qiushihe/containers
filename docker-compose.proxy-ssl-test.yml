@@ -1,5 +1,14 @@
 version: "2"
 services:
+  boulder-server:
+    image: qiushihe/boulder-server
+    build: ./boulder-server
+    depends_on:
+      - domain-proxy
+    environment:
+      BOULDER_SERVER_FAKE_DNS_HOST: "domain-proxy"
+      BOULDER_SERVER_FAKE_DNS_DOMAIN_1: "lala1.com"
+      BOULDER_SERVER_FAKE_DNS_DOMAIN_2: "lala2.com"
   domain-proxy:
     image: qiushihe/domain-proxy
     build: ./domain-proxy
@@ -9,6 +18,8 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
+      DOMAIN_PROXY_USE_CERTBOT: "yes"
+      DOMAIN_PROXY_BOULDER_HOST: "boulder-server"
       DOMAIN_PROXY_FE_1: "lala1.com:80"
       DOMAIN_PROXY_BE_1: "web-server-1:80"
       DOMAIN_PROXY_FE_2: "lala1.com:443"
