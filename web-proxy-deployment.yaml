@@ -16,4 +16,4 @@ spec:
         - name: WEB_PROXY_HOSTS_COUNT
           value: "1"
         - name: WEB_PROXY_HOST_1
-          value: web-1|test-web-1.com|web-server-1:80
+          value: web-1|test-web-1.com|nginx-server-1:80

@@ -2,11 +2,11 @@
 
 ## Minikube
 
-$ ./docker-do.sh rebuild web-server qiushihe/web-server web-server
+$ ./docker-do.sh rebuild nginx-server qiushihe/nginx-server nginx-server
 $ ./docker-do.sh rebuild web-proxy qiushihe/web-proxy web-proxy
 
-$ kubectl create -f web-server-1-deployment.yaml
-$ kubectl create -f web-server-1-service.yaml
+$ kubectl create -f nginx-server-1-deployment.yaml
+$ kubectl create -f nginx-server-1-service.yaml
 $ kubectl create -f web-proxy-deployment.yaml
 $ kubectl create -f web-proxy-service.yaml
 

@@ -3,12 +3,12 @@ Based on: https://wiki.alpinelinux.org/wiki/Nginx_with_PHP
 ### Build:
 
 ```
-$ ./docker-do.sh rebuild web-server qiushihe/web-server ./web-server \
+$ ./docker-do.sh rebuild nginx-server qiushihe/nginx-server ./nginx-server \
   -p 8080:80
 ```
 
 ### Run:
 
 ```
-$ docker start web-server
+$ docker start nginx-server
 ```
