@@ -3,7 +3,7 @@ FROM alpine:3.5
 RUN apk --update upgrade \
   && apk add bash \
   && apk add supervisor nginx dnsmasq \
-  && apk add wget openssl \
+  && apk add wget openssl certbot \
   && rm -rf /var/cache/apk/*
 
 # Setup Nginx
@@ -20,6 +20,10 @@ RUN wget -q --no-check-certificate -O /generate-certs \
   https://raw.githubusercontent.com/paulczar/omgwtfssl/master/generate-certs
 RUN chmod +x /create-self-signed-cert.sh
 RUN chmod +x /generate-certs
+
+# Certbot script
+COPY src/request-certbot-cert.sh /request-certbot-cert.sh
+RUN chmod +x /request-certbot-cert.sh
 
 # Certificate folder
 RUN rm -fr /certs && mkdir /certs
