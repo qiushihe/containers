@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "!!! Starting web server"
+echo "!!! Starting apache server"
 
 if [ ! -d "/web-data/www" ]; then
   mkdir /web-data/www

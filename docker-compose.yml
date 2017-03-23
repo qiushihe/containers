@@ -10,7 +10,7 @@ services:
       - NET_ADMIN
     environment:
       DOMAIN_PROXY_FE_1: "lala1.com:80"
-      DOMAIN_PROXY_BE_1: "web-server-lala1:80"
+      DOMAIN_PROXY_BE_1: "nginx-server-lala1:80"
       DOMAIN_PROXY_FE_2: "lala1.com:9000"
       DOMAIN_PROXY_BE_2: "minio-server-lala1:9000"
   mysql-server:
@@ -22,9 +22,9 @@ services:
       MYSQL_SERVER_ROOT_PASSWORD: "changeme"
       MYSQL_SERVER_USER_1: "lala1"
       MYSQL_SERVER_PASSWORD_1: "lala1pass"
-  web-server-lala1:
-    image: qiushihe/web-server
-    build: ./web-server
+  nginx-server-lala1:
+    image: qiushihe/nginx-server
+    build: ./nginx-server
     volumes:
       - ./volumes/lala1:/web-data
     links:

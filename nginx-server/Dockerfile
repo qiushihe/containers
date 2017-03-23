@@ -56,9 +56,9 @@ RUN \
   sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= ${PHP_CGI_FIX_PATHINFO}|i" /etc/php5/php.ini
 
 # Server run script
-COPY src/run-web-server.sh /run-web-server.sh
-RUN chmod +x /run-web-server.sh
+COPY src/run-nginx-server.sh /run-nginx-server.sh
+RUN chmod +x /run-nginx-server.sh
 
 EXPOSE 80
 
-ENTRYPOINT /run-web-server.sh
+ENTRYPOINT /run-nginx-server.sh
