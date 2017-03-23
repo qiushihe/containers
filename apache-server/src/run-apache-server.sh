@@ -4,8 +4,7 @@ echo "!!! Starting apache server"
 
 if [ ! -d "/web-data/www" ]; then
   mkdir /web-data/www
-  echo "<h1>It Worked~~~</h1>" > /web-data/www/index.html
+  echo "<?php phpinfo(); ?>" > /web-data/www/index.php
 fi
 
-# apachectl configtest
-httpd -f /etc/apache2/httpd.conf -DFOREGROUND
+supervisord -c /supervisord.conf
