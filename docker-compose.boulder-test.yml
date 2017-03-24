@@ -10,7 +10,7 @@ services:
       - boulder-server-client
     environment:
       BOULDER_SERVER_FAKE_DNS_HOST: "boulder-server-client"
-      BOULDER_SERVER_FAKE_DNS_DOMAIN_1: "test-1.domain.com"
+      BOULDER_SERVER_FAKE_DNS_DOMAIN_1: "lala1.com"
   boulder-server-client:
     image: qiushihe/boulder-server-client
     build: ./boulder-server-client

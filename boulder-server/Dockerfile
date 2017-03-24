@@ -37,6 +37,22 @@ RUN GOBIN=/usr/local/bin go install ./cmd/rabbitmq-setup
 RUN chown -R buser /go/
 ###################################################################################################
 
+# Setup MySQL database
+RUN service mysql start \
+  && echo "127.0.0.1 boulder-mysql" >> /etc/hosts \
+  && MYSQL_CONTAINER=1 ./test/create_db.sh
+
+# Setup SoftHSM
+RUN ./test/make-softhsm.sh
+ENV SOFTHSM_CONF /go/src/github.com/letsencrypt/boulder/test/softhsm.conf
+
+# Setup Python virtual env and dependencies
+RUN virtualenv venv
+RUN . venv/bin/activate \
+  && pip install pyparsing appdirs \
+  && pip install -r test/requirements.txt \
+  && pip install -e /certbot/acme
+
 # Server script
 COPY src/run-boulder-server.sh /run-boulder-server.sh
 RUN chmod +x /run-boulder-server.sh

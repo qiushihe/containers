@@ -41,24 +41,18 @@ service rabbitmq-server start
 service mysql start
 /usr/local/bin/pkcs11-daemon /usr/lib/softhsm/libsofthsm.so &
 
+sleep 2
+
 wait_tcp_port boulder-mysql 3306
 wait_tcp_port boulder-rabbitmq 5672
 wait_tcp_port boulder-hsm 5657
 echo "!!! MySQL, RabbitMQ and HSM are ready"
-
-# Setup MySQL
-MYSQL_CONTAINER=1 ./test/create_db.sh
-echo "!!! Done MySQL setup"
 
 # Set up RabbitMQ
 rabbitmq-setup -server amqp://boulder-rabbitmq
 echo "!!! Done RabbitMQ setup"
 
 # Import keys
-./test/make-softhsm.sh
-export SOFTHSM_CONF=/go/src/github.com/letsencrypt/boulder/test/softhsm.conf
-echo "!!! Done SoftHSM setup"
-
 # For some reason we only have to
 # patch test/test-ca.key-pkcs11.json and not test-root.key-pkcs11.json
 sed -i "s|\"[^\"]*libpkcs11-proxy\.so\"|\"\/usr\/lib\/softhsm\/libsofthsm\.so\"|" \
@@ -79,17 +73,8 @@ pkcs11-tool --module=/usr/lib/softhsm/libsofthsm.so --type privkey \
   --write-object ./test/test-root.key.der
 echo "!!! Added root key"
 
-# Create Virtual Env
-virtualenv venv
-
+echo "!!! Starting Boulder Server"
 set +o nounset
 source venv/bin/activate
 set -o nounset
-
-# Install more dependencies
-pip install pyparsing appdirs
-pip install -r test/requirements.txt
-pip install -e /certbot/acme
-
-echo "!!! Starting Boulder Server"
 ./start.py

@@ -36,6 +36,6 @@ if [ -n "$testServer" ]; then
   echo "!!! Test server: $testServer ready"
 fi
 
-certbot $certbotArgs certonly -a standalone -d test-1.domain.com
+certbot $certbotArgs certonly -a standalone -d lala1.com
 
 nginx
