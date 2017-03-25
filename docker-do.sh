@@ -14,11 +14,8 @@ function printHelp {
   echo "COMMAND: clean - Delete container and its image"
   echo "  $ docker-do.sh clean [CONTAINER] [IMAGE]"
   echo ""
-  echo "COMMAND: publish - Rebuild and publish an image"
+  echo "COMMAND: publish - Build and publish an image"
   echo "  $ docker-do.sh publish [IMAGE] [BUILD-DIR] [TAG]"
-  echo ""
-  echo "COMMAND: recompose - Rebuild docker-compose containers and their images"
-  echo "  $ docker-do.sh recompose"
   echo ""
   echo "Dry-run - Only display the commands and not actually run them"
   echo "  $ DRYRUN=true docker-do.sh ..."
@@ -136,16 +133,6 @@ elif [ "$cmd" == "publish" ]; then
   echo "  * build dir: $buildDir"
   echo "Publish commands:"
   printAndRun publishCmds[@]
-elif [ "$cmd" == "recompose" ]; then
-  wDir=$(pwd)
-  recomposeCmds=(
-    "docker-compose stop --timeout 1"
-    "docker-compose rm -f"
-    "docker-compose build"
-  )
-
-  echo "Recompose commands:"
-  printAndRun recomposeCmds[@]
 else
   printHelp
 fi

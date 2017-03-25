@@ -17,6 +17,7 @@ RUN apt-get install -y --no-install-recommends \
 ENV MYSQL_ALLOW_EMPTY_PASSWORD="yes"
 ENV RABBITMQ_NODE_IP_ADDRESS="0.0.0.0"
 ENV PKCS11_DAEMON_SOCKET="tcp://0.0.0.0:5657"
+ENV PKCS11_PROXY_SOCKET="tcp://boulder-hsm:5657"
 
 ###################################################################################################
 # (Mostly) Copied from https://github.com/letsencrypt/boulder/blob/master/Dockerfile
@@ -36,6 +37,22 @@ RUN mkdir bin
 RUN GOBIN=/usr/local/bin go install ./cmd/rabbitmq-setup
 RUN chown -R buser /go/
 ###################################################################################################
+
+# Setup MySQL database
+RUN service mysql start \
+  && echo "127.0.0.1 boulder-mysql" >> /etc/hosts \
+  && MYSQL_CONTAINER=1 ./test/create_db.sh
+
+# Setup SoftHSM
+RUN ./test/make-softhsm.sh
+ENV SOFTHSM_CONF /go/src/github.com/letsencrypt/boulder/test/softhsm.conf
+
+# Setup Python virtual env and dependencies
+RUN virtualenv venv
+RUN . venv/bin/activate \
+  && pip install pyparsing appdirs \
+  && pip install -r test/requirements.txt \
+  && pip install -e /certbot/acme
 
 # Server script
 COPY src/run-boulder-server.sh /run-boulder-server.sh

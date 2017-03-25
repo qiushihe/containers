@@ -1,8 +1,7 @@
 version: "2"
 services:
   boulder-server:
-    image: qiushihe/boulder-server
-    build: ./boulder-server
+    image: qiushihe/boulder-server:2017-03-25
     depends_on:
       - domain-proxy
     environment:
