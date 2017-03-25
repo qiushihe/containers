@@ -17,6 +17,7 @@ RUN apt-get install -y --no-install-recommends \
 ENV MYSQL_ALLOW_EMPTY_PASSWORD="yes"
 ENV RABBITMQ_NODE_IP_ADDRESS="0.0.0.0"
 ENV PKCS11_DAEMON_SOCKET="tcp://0.0.0.0:5657"
+ENV PKCS11_PROXY_SOCKET="tcp://boulder-hsm:5657"
 
 ###################################################################################################
 # (Mostly) Copied from https://github.com/letsencrypt/boulder/blob/master/Dockerfile

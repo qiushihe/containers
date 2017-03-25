@@ -33,8 +33,6 @@ cat <<EOF >> /etc/hosts
 EOF
 echo "!!! Patched /etc/hosts"
 
-export PKCS11_PROXY_SOCKET="tcp://boulder-hsm:5657"
-
 rm -f /var/run/rsyslogd.pid
 service rsyslog start
 service rabbitmq-server start
