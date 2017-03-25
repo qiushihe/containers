@@ -61,7 +61,7 @@ pkcs11-tool --module=/usr/lib/softhsm/libsofthsm.so --type privkey \
   --pin 5678 --login --so-pin 1234 \
   --token-label intermediate --label intermediate_key \
   --write-object ./test/test-ca.key.der
-echo "!!! Added imtermediate key"
+echo "!!! Added intermediate key"
 
 # For some reason, even though test-root.key-pkcs11.json wasn't patched, we still have to add
 # test/test-root.key.der with a patched --module argument
