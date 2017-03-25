@@ -1,8 +1,7 @@
 version: "2"
 services:
   boulder-server:
-    image: qiushihe/boulder-server
-    build: ./boulder-server
+    image: qiushihe/boulder-server:2017-03-25
     # Set depends_on on the test client so the test client will be started before the server.
     # This way when the server starts, it can detect the client's IP and then the server can modify
     # its own /etc/hosts to point all the test domains to the client's IP.
