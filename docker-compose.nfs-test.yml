@@ -1,0 +1,10 @@
+version: "2"
+services:
+  nfs-server:
+    image: qiushihe/nfs-server
+    build: ./nfs-server
+    privileged: true
+  nfs-server-client:
+    image: qiushihe/nfs-server-client
+    build: ./nfs-server-client
+    privileged: true
