@@ -5,6 +5,7 @@ echo "!!! Starting NFS server client"
 rpcbind -f &
 echo "!!! Started rpcbind"
 
+# mkdir -p /mnt/lala1
 # mount -v -t nfs -o proto=tcp,port=2049,vers=3 nfs-server:/exports/lala1 /mnt/lala1
 
 while true; do

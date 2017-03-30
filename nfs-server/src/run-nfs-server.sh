@@ -1,38 +1,26 @@
 #!/bin/bash
 set -e
 
-export_base="/exports/"
+echo "!!! Starting NFS server"
 
-### Handle `docker stop` for graceful shutdown
-function shutdown {
-  echo "- Shutting down nfs-server.."
-  service nfs-kernel-server stop
-  echo "- Nfs server is down"
-  exit 0
-}
+exportBase="/exports"
 
-trap "shutdown" SIGTERM
-####
+echo "$exportBase *(fsid=0,rw,sync,insecure,no_subtree_check,no_root_squash)" | tee /etc/exports
 
-echo "Export points:"
-echo "$export_base *(rw,sync,insecure,fsid=0,no_subtree_check,no_root_squash)" | tee /etc/exports
-
-read -a exports <<< "lala1 lala2"
-for export in "${exports[@]}"; do
-  src=`echo "$export" | sed 's/^\///'` # trim the first '/' if given in export path
-  src="$export_base$src"
-  mkdir -p $src
-  chmod 777 $src
-  echo "$src *(rw,sync,insecure,no_subtree_check,no_root_squash)" | tee -a /etc/exports
+read -a exports <<< "$NFS_SERVER_SHARES"
+for share in "${exports[@]}"; do
+  sharePath="$exportBase/$share"
+  mkdir -p $sharePath
+  chmod 777 $sharePath
+  echo "$sharePath *(rw,sync,insecure,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 done
 
-echo -e "\n- Initializing nfs server.."
 rpcbind
+echo "!!! Started rpcbind"
+
 service nfs-kernel-server start
+echo "!!! Started NFS server"
 
-echo "- Nfs server is up and running.."
-
-## Run forever
 while true; do
   sleep 5
 done

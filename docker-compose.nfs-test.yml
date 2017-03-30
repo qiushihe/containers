@@ -3,8 +3,18 @@ services:
   nfs-server:
     image: qiushihe/nfs-server
     build: ./nfs-server
-    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - nfs-data:/exports
+    environment:
+      NFS_SERVER_SHARES: "lala1 lala2"
   nfs-server-client:
     image: qiushihe/nfs-server-client
     build: ./nfs-server-client
-    privileged: true
+    cap_add:
+      - SYS_ADMIN
+
+volumes:
+  nfs-data:
+    driver: local

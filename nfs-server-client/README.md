@@ -2,7 +2,7 @@
 
 ```
 $ ./docker-do.sh rebuild nfs-server-client qiushihe/nfs-server-client ./nfs-server-client \
-  --privileged
+  --cap-add=SYS_ADMIN
 ```
 
 ### Run:
