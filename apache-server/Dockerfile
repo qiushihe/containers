@@ -10,16 +10,23 @@ RUN apk --update upgrade \
     php5-pdo_pgsql php5-bcmath php5-gd php5-xcache php5-odbc php5-pdo_mysql \
     php5-pdo_sqlite php5-gettext php5-xmlreader php5-xmlrpc php5-bz2 \
     php5-memcache php5-mssql php5-iconv php5-pdo_dblib php5-curl php5-ctype \
+    php5-phar \
   && rm -rf /var/cache/apk/*
 
 # Server/Web root
+COPY src/fix-web-data-permission.sh /fix-web-data-permission.sh
+RUN chmod +x /fix-web-data-permission.sh
+
 RUN rm -fr /var/www \
   && mkdir /server-root \
-  && mkdir /web-data \
+  && mkdir -p /web-data/www \
   && ln -sf /web-data /server-root/web-data \
   && ln -sf /var/log/apache2 /server-root/log \
   && ln -sf /usr/lib/apache2 /server-root/modules \
   && ln -sf /run/apache2 /server-root/run
+
+RUN echo "<?php phpinfo(); ?>" > /web-data/www/index.php \
+  && /fix-web-data-permission.sh
 
 VOLUME /web-data
 
@@ -32,6 +39,10 @@ COPY src/httpd.conf /etc/apache2/httpd.conf
 RUN rm -fr /run/apache2 \
   && mkdir /run/apache2 \
   && chown apache:apache /run/apache2
+
+# Setup PHP-FPM
+RUN cp /etc/php5/php-fpm.conf /etc/php5/php-fpm.conf.original
+COPY src/php-fpm.conf /etc/php5/php-fpm.conf
 
 # Server run script
 COPY src/run-apache-server.sh /run-apache-server.sh
