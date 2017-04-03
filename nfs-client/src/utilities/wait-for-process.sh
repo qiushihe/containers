@@ -7,9 +7,9 @@ while true; do
   then
     break
   else
-    echo "Still waiting for process: $process ..."
+    echo "!!! Still waiting for process: $process ..."
     sleep 5
   fi
 done
 
-echo "Process: $process is now running"
+echo "!!! Process: $process is now running"
