@@ -1,5 +1,6 @@
 FROM alpine:3.5
 
+# Install packages ================================================================================
 RUN apk --update upgrade \
   && apk add bash \
   && apk add supervisor \
@@ -10,17 +11,27 @@ RUN apk --update upgrade \
     php5-pdo_pgsql php5-bcmath php5-gd php5-xcache php5-odbc php5-pdo_mysql \
     php5-pdo_sqlite php5-gettext php5-xmlreader php5-xmlrpc php5-bz2 \
     php5-memcache php5-mssql php5-iconv php5-pdo_dblib php5-curl php5-ctype \
+    php5-phar \
   && rm -rf /var/cache/apk/*
 
+# Supervisor ======================================================================================
+RUN rm -fr /supervisor
+COPY src/supervisor /supervisor
+
+# Commands ========================================================================================
+RUN rm -fr /commands
+COPY src/commands /commands
+RUN chmod +x /commands/*
+
+# =================================================================================================
+
 # Web folder
-RUN rm -fr /web-data && mkdir /web-data
+RUN rm -fr /web-data && mkdir -p /web-data/www
+RUN echo "<?php phpinfo(); ?>" > /web-data/www/index.php
 VOLUME /web-data
 
-# Supervisor config
-COPY src/supervisord.conf /supervisord.conf
-
 # Nginx config
-COPY src/nginx.conf /etc/nginx/nginx.conf
+COPY src/nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Setup PHP
 ENV \
@@ -55,10 +66,6 @@ RUN \
   sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php5/php.ini && \
   sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo= ${PHP_CGI_FIX_PATHINFO}|i" /etc/php5/php.ini
 
-# Server run script
-COPY src/run-nginx-server.sh /run-nginx-server.sh
-RUN chmod +x /run-nginx-server.sh
-
 EXPOSE 80
 
-ENTRYPOINT /run-nginx-server.sh
+ENTRYPOINT ["/commands/run-nginx-server.sh"]
