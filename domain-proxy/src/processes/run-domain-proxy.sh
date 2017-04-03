@@ -18,20 +18,20 @@ for fe in $DOMAIN_FES; do
   feSsl=""
   if [ "$fePort" == "443" ]; then
     if [ -n "$useCertbot" ]; then
-      /request-certbot-cert.sh $feHost $boulderHost
+      /utilities/request-certbot-cert.sh $feHost $boulderHost
       feSsl="/etc/letsencrypt/live/$feHost"
       echo "!!! Got certificate from certbot for $feHost"
     else
-      /create-self-signed-cert.sh $feHost
+      /utilities/create-self-signed-cert.sh $feHost
       feSsl="/certs/$feHost"
       echo "!!! Created self-signed certificate for $feHost"
     fi
   fi
 
   # Create proxy config
-  /create-proxy-config.sh $feUrl $beUrl $feSsl
+  /utilities/create-proxy-config.sh $feUrl $beUrl $feSsl
   echo "!!! Created proxy config for $feUrl -> $beUrl"
 done
 
 echo "!!! Starting Domain Proxy"
-supervisord -c /supervisord.conf
+supervisord -c /supervisor/supervisord.conf
