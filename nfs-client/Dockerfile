@@ -13,11 +13,11 @@ RUN rm -fr /utilities
 COPY src/utilities /utilities
 RUN chmod +x /utilities/*
 
-# Commands ========================================================================================
-RUN rm -fr /commands
-COPY src/commands /commands
-RUN chmod +x /commands/*
+# Processes =======================================================================================
+RUN rm -fr /processes
+COPY src/processes /processes
+RUN chmod +x /processes/*
 
 # =================================================================================================
 
-ENTRYPOINT ["/commands/run-nfs-client.sh"]
+ENTRYPOINT ["/processes/run-nfs-client.sh"]

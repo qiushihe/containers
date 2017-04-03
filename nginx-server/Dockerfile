@@ -18,10 +18,10 @@ RUN apk --update upgrade \
 RUN rm -fr /supervisor
 COPY src/supervisor /supervisor
 
-# Commands ========================================================================================
-RUN rm -fr /commands
-COPY src/commands /commands
-RUN chmod +x /commands/*
+# Processes =======================================================================================
+RUN rm -fr /processes
+COPY src/processes /processes
+RUN chmod +x /processes/*
 
 # =================================================================================================
 
@@ -68,4 +68,4 @@ RUN \
 
 EXPOSE 80
 
-ENTRYPOINT ["/commands/run-nginx-server.sh"]
+ENTRYPOINT ["/processes/run-nginx-server.sh"]
