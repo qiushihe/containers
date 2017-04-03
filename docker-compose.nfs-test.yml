@@ -9,9 +9,9 @@ services:
       - nfs-data:/exports
     environment:
       NFS_SERVER_SHARES: "lala1 lala2"
-  nfs-server-client:
-    image: qiushihe/nfs-server-client
-    build: ./nfs-server-client
+  nfs-client:
+    image: qiushihe/nfs-client
+    build: ./nfs-client
     cap_add:
       - SYS_ADMIN
 
