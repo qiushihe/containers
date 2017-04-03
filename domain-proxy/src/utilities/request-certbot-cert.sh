@@ -3,15 +3,6 @@
 domain=$1
 boulderHost=$2
 
-wait_tcp_port() {
-  local host="$1" port="$2"
-  while ! exec 6<>/dev/tcp/$host/$port; do
-    echo "$(date) - still trying to connect to $host:$port"
-    sleep 5
-  done
-  exec 6>&-
-}
-
 echo "!!! Requesting certificate for $domain"
 certbotArgs=""
 if [ -n "$boulderHost" ]; then
@@ -28,8 +19,7 @@ if [ -n "$boulderHost" ]; then
     --agree-tos \
     --register-unsafely-without-email"
 
-  wait_tcp_port $boulderHost 4000
-  echo "!!! Test server: $boulderHost ready"
+  /utilities/wait-for-host.sh $boulderHost 4000
 fi
 
 # Resulting certificate is placed in /etc/letsencrypt/live/$domain
