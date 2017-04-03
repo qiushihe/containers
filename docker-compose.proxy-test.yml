@@ -10,19 +10,19 @@ services:
       - NET_ADMIN
     environment:
       DOMAIN_PROXY_FE_1: "lala1.com:80"
-      DOMAIN_PROXY_BE_1: "nginx-server-1:80"
+      DOMAIN_PROXY_BE_1: "web-server-1:80"
       DOMAIN_PROXY_FE_2: "lala1.com:443"
-      DOMAIN_PROXY_BE_2: "nginx-server-1:80"
+      DOMAIN_PROXY_BE_2: "web-server-1:80"
       DOMAIN_PROXY_FE_3: "lala2.com:80"
-      DOMAIN_PROXY_BE_3: "nginx-server-2:80"
+      DOMAIN_PROXY_BE_3: "web-server-2:80"
       DOMAIN_PROXY_FE_4: "lala2.com:443"
-      DOMAIN_PROXY_BE_4: "nginx-server-2:80"
-  nginx-server-1:
-    image: qiushihe/nginx-server
-    build: ./nginx-server
+      DOMAIN_PROXY_BE_4: "web-server-2:80"
+  web-server-1:
+    image: qiushihe/apache-server
+    build: ./apache-server
     volumes:
       - ./volumes/lala1:/web-data
-  nginx-server-2:
+  web-server-2:
     image: qiushihe/nginx-server
     build: ./nginx-server
     volumes:
