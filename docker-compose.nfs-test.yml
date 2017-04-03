@@ -1,0 +1,20 @@
+version: "2"
+services:
+  nfs-server:
+    image: qiushihe/nfs-server
+    build: ./nfs-server
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - nfs-data:/exports
+    environment:
+      NFS_SERVER_SHARES: "lala1 lala2"
+  nfs-client:
+    image: qiushihe/nfs-client
+    build: ./nfs-client
+    cap_add:
+      - SYS_ADMIN
+
+volumes:
+  nfs-data:
+    driver: local
