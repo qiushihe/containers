@@ -2,4 +2,4 @@
 
 echo "!!! Starting apache server"
 
-supervisord -c /supervisord.conf
+supervisord -c /supervisor/supervisord.conf

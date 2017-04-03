@@ -1,5 +1,6 @@
 FROM alpine:3.5
 
+# Install packages ================================================================================
 RUN apk --update upgrade \
   && apk add bash \
   && apk add supervisor \
@@ -13,10 +14,23 @@ RUN apk --update upgrade \
     php5-phar \
   && rm -rf /var/cache/apk/*
 
-# Server/Web root
-COPY src/fix-web-data-permission.sh /fix-web-data-permission.sh
-RUN chmod +x /fix-web-data-permission.sh
+# Supervisor ======================================================================================
+RUN rm -fr /supervisor
+COPY src/supervisor /supervisor
 
+# Utilities =======================================================================================
+RUN rm -fr /utilities
+COPY src/utilities /utilities
+RUN chmod +x /utilities/*
+
+# Processes =======================================================================================
+RUN rm -fr /processes
+COPY src/processes /processes
+RUN chmod +x /processes/*
+
+# =================================================================================================
+
+# Server/Web root
 RUN rm -fr /var/www \
   && mkdir /server-root \
   && mkdir -p /web-data/www \
@@ -26,28 +40,21 @@ RUN rm -fr /var/www \
   && ln -sf /run/apache2 /server-root/run
 
 RUN echo "<?php phpinfo(); ?>" > /web-data/www/index.php \
-  && /fix-web-data-permission.sh
+  && /utilities/fix-web-data-permission.sh
 
 VOLUME /web-data
 
-# Supervisor config
-COPY src/supervisord.conf /supervisord.conf
-
 # Setup Apache
 RUN cp /etc/apache2/httpd.conf /etc/apache2/httpd.conf.original
-COPY src/httpd.conf /etc/apache2/httpd.conf
+COPY src/apache/httpd.conf /etc/apache2/httpd.conf
 RUN rm -fr /run/apache2 \
   && mkdir /run/apache2 \
   && chown apache:apache /run/apache2
 
 # Setup PHP-FPM
 RUN cp /etc/php5/php-fpm.conf /etc/php5/php-fpm.conf.original
-COPY src/php-fpm.conf /etc/php5/php-fpm.conf
-
-# Server run script
-COPY src/run-apache-server.sh /run-apache-server.sh
-RUN chmod +x /run-apache-server.sh
+COPY src/php/php-fpm.conf /etc/php5/php-fpm.conf
 
 EXPOSE 80
 
-ENTRYPOINT /run-apache-server.sh
+ENTRYPOINT ["/processes/run-apache-server.sh"]
