@@ -5,8 +5,8 @@ RUN apk add --update bash nfs-utils \
   && rm -rf /var/cache/apk/*
 
 # Utilities =======================================================================================
-RUN rm -fr /utilities
-COPY src/utilities /utilities
+RUN mkdir -p /utilities
+COPY src/utilities/* /utilities/
 RUN chmod +x /utilities/*
 
 # =================================================================================================

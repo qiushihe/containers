@@ -8,12 +8,12 @@ RUN apk --update upgrade \
   && rm -rf /var/cache/apk/*
 
 # Supervisor ======================================================================================
-RUN rm -fr /supervisor
-COPY src/supervisor /supervisor
+RUN mkdir -p /supervisor
+COPY src/supervisor/* /supervisor/
 
 # Utilities =======================================================================================
-RUN rm -fr /utilities
-COPY src/utilities /utilities
+RUN mkdir -p /utilities
+COPY src/utilities/* /utilities/
 RUN chmod +x /utilities/*
 
 # =================================================================================================

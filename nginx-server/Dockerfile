@@ -15,8 +15,8 @@ RUN apk --update upgrade \
   && rm -rf /var/cache/apk/*
 
 # Supervisor ======================================================================================
-RUN rm -fr /supervisor
-COPY src/supervisor /supervisor
+RUN mkdir -p /supervisor
+COPY src/supervisor/* /supervisor/
 
 # =================================================================================================
 
