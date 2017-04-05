@@ -13,4 +13,4 @@ while true; do
   fi
 done
 
-echo "!!! Process: $device is now mounted onto $mountPoint ($fsType)"
+echo "!!! $device is now mounted onto $mountPoint ($fsType)"
