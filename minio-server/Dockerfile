@@ -34,9 +34,9 @@ RUN wget -q -O /opt/minio/bin/minio https://dl.minio.io/server/minio/release/lin
 RUN rm -fr /minio-data && mkdir /minio-data
 VOLUME /minio-data
 
-COPY src/run-minio-server.sh /run-minio-server.sh
-RUN chmod +x /run-minio-server.sh
-
 EXPOSE 9000
 
-ENTRYPOINT /run-minio-server.sh
+# Entry ===========================================================================================
+COPY src/entry.sh /entry.sh
+RUN chmod +x /entry.sh
+ENTRYPOINT ["/entry.sh"]

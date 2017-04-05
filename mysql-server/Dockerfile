@@ -9,10 +9,9 @@ RUN apk --update upgrade \
 RUN rm -fr /mysql-data && mkdir /mysql-data
 VOLUME /mysql-data
 
-# Server run script
-COPY src/run-mysql-server.sh /run-mysql-server.sh
-RUN chmod +x /run-mysql-server.sh
-
 EXPOSE 3306
 
-ENTRYPOINT /run-mysql-server.sh
+# Entry ===========================================================================================
+COPY src/entry.sh /entry.sh
+RUN chmod +x /entry.sh
+ENTRYPOINT ["/entry.sh"]
