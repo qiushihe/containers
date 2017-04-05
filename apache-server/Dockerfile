@@ -15,18 +15,13 @@ RUN apk --update upgrade \
   && rm -rf /var/cache/apk/*
 
 # Supervisor ======================================================================================
-RUN rm -fr /supervisor
-COPY src/supervisor /supervisor
+RUN mkdir -p /supervisor
+COPY src/supervisor/* /supervisor/
 
 # Utilities =======================================================================================
-RUN rm -fr /utilities
-COPY src/utilities /utilities
+RUN mkdir -p /utilities
+COPY src/utilities/* /utilities/
 RUN chmod +x /utilities/*
-
-# Processes =======================================================================================
-RUN rm -fr /processes
-COPY src/processes /processes
-RUN chmod +x /processes/*
 
 # =================================================================================================
 
@@ -57,4 +52,7 @@ COPY src/php/php-fpm.conf /etc/php5/php-fpm.conf
 
 EXPOSE 80
 
-ENTRYPOINT ["/processes/run-apache-server.sh"]
+# Entry ===========================================================================================
+COPY src/entry.sh /entry.sh
+RUN chmod +x /entry.sh
+ENTRYPOINT ["/entry.sh"]

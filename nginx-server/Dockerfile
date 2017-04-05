@@ -15,13 +15,8 @@ RUN apk --update upgrade \
   && rm -rf /var/cache/apk/*
 
 # Supervisor ======================================================================================
-RUN rm -fr /supervisor
-COPY src/supervisor /supervisor
-
-# Processes =======================================================================================
-RUN rm -fr /processes
-COPY src/processes /processes
-RUN chmod +x /processes/*
+RUN mkdir -p /supervisor
+COPY src/supervisor/* /supervisor/
 
 # =================================================================================================
 
@@ -68,4 +63,7 @@ RUN \
 
 EXPOSE 80
 
-ENTRYPOINT ["/processes/run-nginx-server.sh"]
+# Entry ===========================================================================================
+COPY src/entry.sh /entry.sh
+RUN chmod +x /entry.sh
+ENTRYPOINT ["/entry.sh"]

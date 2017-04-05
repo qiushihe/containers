@@ -14,6 +14,10 @@ services:
     build: ./nfs-client
     cap_add:
       - SYS_ADMIN
+    environment:
+      NFS_CLIENT_NFS_SERVER: "nfs-server"
+      NFS_CLIENT_NFS_SHARE1: "lala1"
+      NFS_CLIENT_NFS_SHARE2: "lala2"
 
 volumes:
   nfs-data:

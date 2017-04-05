@@ -10,7 +10,7 @@ VOLUME /exports
 
 EXPOSE 111/udp 2049/tcp
 
-COPY src/run-nfs-server.sh /run-nfs-server.sh
-RUN chmod +x /run-nfs-server.sh
-
-ENTRYPOINT ["/run-nfs-server.sh"]
+# Entry ===========================================================================================
+COPY src/entry.sh /entry.sh
+RUN chmod +x /entry.sh
+ENTRYPOINT ["/entry.sh"]
