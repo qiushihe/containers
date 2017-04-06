@@ -1,7 +1,6 @@
 version: "2"
 services:
   nfs-server:
-    # image: qiushihe/nfs-server:2017-04-06
     image: qiushihe/nfs-server
     build: ./nfs-server
     cap_add:
@@ -21,8 +20,8 @@ services:
     environment:
       DOMAIN_PROXY_FE_1: "lala1.com:9000"
       DOMAIN_PROXY_BE_1: "minio-server-lala1:9000"
-      # DOMAIN_PROXY_FE_2: "lala2.com:9000"
-      # DOMAIN_PROXY_BE_2: "minio-server-lala2:9000"
+      DOMAIN_PROXY_FE_2: "lala2.com:9000"
+      DOMAIN_PROXY_BE_2: "minio-server-lala2:9000"
   minio-server-lala1:
     image: qiushihe/minio-server
     build: ./minio-server
@@ -35,18 +34,20 @@ services:
       MINIO_SERVER_SECRET_KEY: "secretkey1"
       MINIO_SERVER_NFS_HOST: "nfs-server"
       MINIO_SERVER_NFS_SHARE: "lala1"
-  # minio-server-lala2:
-  #   image: qiushihe/minio-server
-  #   build: ./minio-server
-  #   cap_add:
-  #     - SYS_ADMIN
-  #   volumes:
-  #     - ./volumes/lala2:/minio-data
-  #   environment:
-  #     MINIO_SERVER_ACCESS_KEY: "accesskey2"
-  #     MINIO_SERVER_SECRET_KEY: "secretkey2"
-  #     MINIO_SERVER_NFS_HOST: "nfs-server"
-  #     MINIO_SERVER_NFS_SHARE: "lala2"
+      MINIO_SERVER_NFS_WAIT: "30"
+  minio-server-lala2:
+    image: qiushihe/minio-server
+    build: ./minio-server
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - ./volumes/lala2:/minio-data
+    environment:
+      MINIO_SERVER_ACCESS_KEY: "accesskey2"
+      MINIO_SERVER_SECRET_KEY: "secretkey2"
+      MINIO_SERVER_NFS_HOST: "nfs-server"
+      MINIO_SERVER_NFS_SHARE: "lala2"
+      MINIO_SERVER_NFS_WAIT: "30"
 
 volumes:
   nfs-data:
