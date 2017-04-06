@@ -1,7 +1,7 @@
 FROM alpine:3.5
 
 RUN apk --update upgrade \
-  && apk add bash
+  && apk add bash nfs-utils
 
 # -------------------------------------------------------------------------------------------------
 # Install glibc
@@ -26,12 +26,18 @@ RUN rm /glibc-*.apk
 # Cleanup apk
 RUN rm -rf /var/cache/apk/*
 
+# Utilities =======================================================================================
+RUN mkdir -p /utilities
+COPY src/utilities/* /utilities/
+RUN chmod +x /utilities/*
+
 # Setup minio
 RUN rm -fr /opt/minio && mkdir -p /opt/minio/bin && mkdir -p /opt/minio/conf
 RUN wget -q -O /opt/minio/bin/minio https://dl.minio.io/server/minio/release/linux-amd64/minio \
   && chmod +x /opt/minio/bin/minio
 
-RUN rm -fr /minio-data && mkdir /minio-data
+RUN rm -fr /minio-data.local && mkdir /minio-data.local
+RUN ln -sf /minio-data.local /minio-data
 VOLUME /minio-data
 
 EXPOSE 9000

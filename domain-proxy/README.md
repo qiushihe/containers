@@ -15,7 +15,7 @@ $ ./docker-do.sh rebuild domain-proxy qiushihe/domain-proxy ./domain-proxy \
   -e 'DOMAIN_PROXY_BE_4="destination.two:80"'
 ```
 
-Also accepts these two environment variables:
+Also accepts environment variables:
 
 * `DOMAIN_PROXY_USE_CERTBOT`: If set to non-empty value, the domain proxy server will use certbot to generate SSL certificates
 * `DOMAIN_PROXY_BOULDER_HOST`: If set, the domain proxy server will use certbot in test mode to connect to this host instead of the official Let's Encrypt server
