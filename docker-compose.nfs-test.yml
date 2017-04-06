@@ -1,8 +1,7 @@
 version: "2"
 services:
   nfs-server:
-    image: qiushihe/nfs-server
-    build: ./nfs-server
+    image: qiushihe/nfs-server:2017-04-06
     cap_add:
       - SYS_ADMIN
     volumes:
