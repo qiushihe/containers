@@ -1,5 +1,16 @@
 #!/bin/bash
 
+nfsHost=$MYSQL_SERVER_NFS_HOST
+nfsShare=$MYSQL_SERVER_NFS_SHARE
+nfsWait=$MYSQL_SERVER_NFS_WAIT
+
+if [ -n "$nfsHost" ] && [ -n "$nfsShare" ]; then
+  /utilities/mount-nfs-share.sh $nfsHost $nfsShare $nfsWait
+  rm /mysql-data
+  ln -sf /mnt/$nfsShare /mysql-data
+  echo "!!! Linked /mnt/$nfsShare to /mysql-data"
+fi
+
 runAs="root"
 rootPassword=$MYSQL_SERVER_ROOT_PASSWORD
 
@@ -19,7 +30,7 @@ if [ -d "/mysql-data/mysql" ]; then
   echo "MySQL data already initialized in /mysql-data/mysql"
 else
   mysql_install_db --user=$runAs --datadir=/mysql-data
-  echo "!!! Initialized MySQL data in /mysql-data/mysql"
+  echo "!!! Initialized MySQL data in /mysql-data"
 
   # Start MySQL in socket-only mode for initial setup
   mysqld --user=$runAs --datadir=/mysql-data --skip-networking & mysqldPid="$!"
