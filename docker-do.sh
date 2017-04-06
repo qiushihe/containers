@@ -16,23 +16,6 @@ function printHelp {
   echo ""
   echo "COMMAND: publish - Build and publish an image"
   echo "  $ docker-do.sh publish [IMAGE] [BUILD-DIR] [TAG]"
-  echo ""
-  echo "Dry-run - Only display the commands and not actually run them"
-  echo "  $ DRYRUN=true docker-do.sh ..."
-}
-
-function printAndRun {
-  declare -a cmds=("${!1}")
-
-  for i in "${cmds[@]}"; do
-  	echo "  $ $i"
-  done
-
-  if [ -z "$DRYRUN" ]; then
-    for i in "${cmds[@]}"; do
-    	eval $i
-    done
-  fi
 }
 
 ###################################################################################################
@@ -87,52 +70,40 @@ if [ "$cmd" == "rebuild" ]; then
   ARGV_pop # remove the "--"
   rest="${ARGV[@]}"
 
-  rebuildCmds=(
-    "docker build -t $image $buildDir"
-    "docker stop $container"
-    "docker rm $container"
-    "docker create --name $container $options $image $rest"
-  )
-
   echo "Rebuild:"
   echo "  * container: $container"
   echo "  * image: $image"
   echo "  * build dir: $buildDir"
   echo "  * container options: $options"
   echo "  * container rest: $rest"
-  echo "Rebuild commands:"
-  printAndRun rebuildCmds[@]
+
+  docker build -t $image $buildDir
+  docker stop $container
+  docker rm $container
+  docker create --name $container $options $image $rest
 elif [ "$cmd" == "clean" ]; then
   ARGV_shiftInto container
   ARGV_shiftInto image
 
-  cleanCmds=(
-    "docker stop $container"
-    "docker rm $container"
-    "docker rmi $image"
-  )
-
   echo "Clean:"
   echo "  * container: $container"
   echo "  * image: $image"
-  echo "Clean commands:"
-  printAndRun cleanCmds[@]
+
+  docker stop $container
+  docker rm $container
+  docker rmi $image
 elif [ "$cmd" == "publish" ]; then
   ARGV_shiftInto image
   ARGV_shiftInto buildDir
   ARGV_shiftInto tag
 
-  publishCmds=(
-    "docker build -t $image $buildDir"
-    "docker tag $(docker images | grep -e "^$image[[:space:]]\+latest[[:space:]]\+" | awk '{print $3}') $image:$tag"
-    "docker push $image"
-  )
-
   echo "Publish:"
   echo "  * image: $image"
   echo "  * build dir: $buildDir"
-  echo "Publish commands:"
-  printAndRun publishCmds[@]
+
+  docker build -t $image $buildDir
+  docker tag $(docker images | grep -e "^$image[[:space:]]\+latest[[:space:]]\+" | awk '{print $3}') $image:$tag
+  docker push $image
 else
   printHelp
 fi
