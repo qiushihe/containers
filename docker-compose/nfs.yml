@@ -2,7 +2,7 @@ version: "2"
 services:
   nfs-server:
     image: qiushihe/nfs-server
-    build: ./nfs-server
+    build: ../nfs-server
     cap_add:
       - SYS_ADMIN
     volumes:
@@ -12,7 +12,7 @@ services:
       NFS_SERVER_SHARE_2: "lala2"
   nfs-client:
     image: qiushihe/nfs-client
-    build: ./nfs-client
+    build: ../nfs-client
     cap_add:
       - SYS_ADMIN
     environment:

@@ -2,7 +2,7 @@ version: "2"
 services:
   domain-proxy:
     image: qiushihe/domain-proxy
-    build: ./domain-proxy
+    build: ../domain-proxy
     ports:
       - "8080:80"
       - "8443:443"
@@ -19,11 +19,11 @@ services:
       DOMAIN_PROXY_BE_4: "web-server-2:80"
   web-server-1:
     image: qiushihe/apache-server
-    build: ./apache-server
+    build: ../apache-server
     volumes:
       - ./volumes/lala1:/web-data
   web-server-2:
     image: qiushihe/nginx-server
-    build: ./nginx-server
+    build: ../nginx-server
     volumes:
       - ./volumes/lala2:/web-data

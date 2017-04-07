@@ -2,7 +2,7 @@ version: "2"
 services:
   nfs-server:
     image: qiushihe/nfs-server
-    build: ./nfs-server
+    build: ../nfs-server
     cap_add:
       - SYS_ADMIN
     volumes:
@@ -12,7 +12,7 @@ services:
       NFS_SERVER_SHARE_2: "lala2"
   domain-proxy:
     image: qiushihe/domain-proxy
-    build: ./domain-proxy
+    build: ../domain-proxy
     ports:
       - "9000:9000"
     cap_add:
@@ -24,7 +24,7 @@ services:
       DOMAIN_PROXY_BE_2: "minio-server-lala2:9000"
   minio-server-lala1:
     image: qiushihe/minio-server
-    build: ./minio-server
+    build: ../minio-server
     cap_add:
       - SYS_ADMIN
     environment:
@@ -34,7 +34,7 @@ services:
       MINIO_SERVER_NFS_SHARE: "lala1"
   minio-server-lala2:
     image: qiushihe/minio-server
-    build: ./minio-server
+    build: ../minio-server
     cap_add:
       - SYS_ADMIN
     environment:

@@ -10,7 +10,7 @@ services:
       BOULDER_SERVER_FAKE_DNS_DOMAIN_2: "lala2.com"
   domain-proxy:
     image: qiushihe/domain-proxy
-    build: ./domain-proxy
+    build: ../domain-proxy
     ports:
       - "8080:80"
       - "8443:443"
@@ -29,11 +29,11 @@ services:
       DOMAIN_PROXY_BE_4: "nginx-server-2:80"
   nginx-server-1:
     image: qiushihe/nginx-server
-    build: ./nginx-server
+    build: ../nginx-server
     volumes:
       - ./volumes/lala1:/web-data
   nginx-server-2:
     image: qiushihe/nginx-server
-    build: ./nginx-server
+    build: ../nginx-server
     volumes:
       - ./volumes/lala2:/web-data

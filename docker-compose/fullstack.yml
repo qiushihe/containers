@@ -2,7 +2,7 @@ version: "2"
 services:
   domain-proxy:
     image: qiushihe/domain-proxy
-    build: ./domain-proxy
+    build: ../domain-proxy
     ports:
       - "8080:80"
       - "9000:9000"
@@ -15,7 +15,7 @@ services:
       DOMAIN_PROXY_BE_2: "minio-server-lala1:9000"
   mysql-server:
     image: qiushihe/mysql-server
-    build: ./mysql-server
+    build: ../mysql-server
     volumes:
       - ./volumes/mysql-server:/mysql-data
     environment:
@@ -24,14 +24,14 @@ services:
       MYSQL_SERVER_PASSWORD_1: "lala1pass"
   nginx-server-lala1:
     image: qiushihe/nginx-server
-    build: ./nginx-server
+    build: ../nginx-server
     volumes:
       - ./volumes/lala1:/web-data
     links:
       - mysql-server
   minio-server-lala1:
     image: qiushihe/minio-server
-    build: ./minio-server
+    build: ../minio-server
     volumes:
       - ./volumes/lala1:/minio-data
     environment:

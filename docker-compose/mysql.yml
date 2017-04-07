@@ -2,7 +2,7 @@ version: "2"
 services:
   nfs-server:
     image: qiushihe/nfs-server
-    build: ./nfs-server
+    build: ../nfs-server
     cap_add:
       - SYS_ADMIN
     volumes:
@@ -11,7 +11,7 @@ services:
       NFS_SERVER_SHARE_1: "mysql"
   mysql-server:
     image: qiushihe/mysql-server
-    build: ./mysql-server
+    build: ../mysql-server
     cap_add:
       - SYS_ADMIN
     ports:

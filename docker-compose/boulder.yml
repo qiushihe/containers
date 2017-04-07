@@ -12,7 +12,7 @@ services:
       BOULDER_SERVER_FAKE_DNS_DOMAIN_1: "lala1.com"
   boulder-server-client:
     image: qiushihe/boulder-server-client
-    build: ./boulder-server-client
+    build: ../boulder-server-client
     ports:
       - "8080:80"
       - "8443:443"
