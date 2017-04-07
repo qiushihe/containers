@@ -4,10 +4,9 @@ echo "!!! Starting Minio Server"
 
 nfsHost=$MINIO_SERVER_NFS_HOST
 nfsShare=$MINIO_SERVER_NFS_SHARE
-nfsWait=$MINIO_SERVER_NFS_WAIT
 
 if [ -n "$nfsHost" ] && [ -n "$nfsShare" ]; then
-  /utilities/mount-nfs-share.sh $nfsHost $nfsShare $nfsWait
+  /utilities/mount-nfs-share.sh $nfsHost $nfsShare
   rm -fr /mnt/$nfsShare/.minio.sys
   echo "!!! Clear old /mnt/$nfsShare/.minio.sys"
   rm /minio-data

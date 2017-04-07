@@ -16,14 +16,20 @@ for share in $NFS_SERVER_SHARES; do
   echo "$sharePath *(rw,sync,insecure,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 done
 
+exportfs -rv
+echo "!!! Done exporting"
+
 rpcbind
 echo "!!! Started rpcbind"
 
 rpc.statd
 echo "!!! Started rpc.statd"
 
-service nfs-kernel-server start
-echo "!!! Started NFS server"
+rpc.nfsd
+echo "!!! Started rpc.nfsd"
+
+rpc.mountd
+echo "!!! Started rpc.mountd"
 
 while true; do
   sleep 5

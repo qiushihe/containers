@@ -22,7 +22,6 @@ services:
       MYSQL_SERVER_PASSWORD_1: "lala1pass"
       MYSQL_SERVER_NFS_HOST: "nfs-server"
       MYSQL_SERVER_NFS_SHARE: "mysql"
-      MYSQL_SERVER_NFS_WAIT: "30"
 
 volumes:
   nfs-data:

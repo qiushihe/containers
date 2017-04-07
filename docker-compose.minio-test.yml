@@ -27,27 +27,21 @@ services:
     build: ./minio-server
     cap_add:
       - SYS_ADMIN
-    volumes:
-      - ./volumes/lala1:/minio-data
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey1"
       MINIO_SERVER_SECRET_KEY: "secretkey1"
       MINIO_SERVER_NFS_HOST: "nfs-server"
       MINIO_SERVER_NFS_SHARE: "lala1"
-      MINIO_SERVER_NFS_WAIT: "30"
   minio-server-lala2:
     image: qiushihe/minio-server
     build: ./minio-server
     cap_add:
       - SYS_ADMIN
-    volumes:
-      - ./volumes/lala2:/minio-data
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey2"
       MINIO_SERVER_SECRET_KEY: "secretkey2"
       MINIO_SERVER_NFS_HOST: "nfs-server"
       MINIO_SERVER_NFS_SHARE: "lala2"
-      MINIO_SERVER_NFS_WAIT: "30"
 
 volumes:
   nfs-data:

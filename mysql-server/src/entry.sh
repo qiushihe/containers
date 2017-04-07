@@ -2,10 +2,9 @@
 
 nfsHost=$MYSQL_SERVER_NFS_HOST
 nfsShare=$MYSQL_SERVER_NFS_SHARE
-nfsWait=$MYSQL_SERVER_NFS_WAIT
 
 if [ -n "$nfsHost" ] && [ -n "$nfsShare" ]; then
-  /utilities/mount-nfs-share.sh $nfsHost $nfsShare $nfsWait
+  /utilities/mount-nfs-share.sh $nfsHost $nfsShare
   rm /mysql-data
   ln -sf /mnt/$nfsShare /mysql-data
   echo "!!! Linked /mnt/$nfsShare to /mysql-data"

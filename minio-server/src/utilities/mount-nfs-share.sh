@@ -45,7 +45,6 @@ waitForMount() {
 
 nfsServer=$1
 nfsShare=$2
-nfsWait=$3
 
 if ! $(pgrep -x "rpcbind" > /dev/null); then
   rpcbind
@@ -61,12 +60,7 @@ if ! $(exec 6<>/dev/tcp/$nfsServer/2049); then
   waitForHost $nfsServer 2049
 fi
 
-if [ -n "$nfsWait" ] && [ "$nfsWait" -gt "0" ]; then
-  echo "!!! Waiting $nfsWait seconds before attempting to mount NFS share"
-  sleep $nfsWait
-fi
-
 mkdir -p /mnt/$nfsShare
-mount -v -t nfs -o proto=tcp,port=2049,vers=3 $nfsServer:/exports/$nfsShare /mnt/$nfsShare
+mount -v -t nfs -o proto=tcp,port=2049,vers=3,local_lock=all $nfsServer:/exports/$nfsShare /mnt/$nfsShare
 
 waitForMount "$nfsServer:/exports/$nfsShare" "/mnt/$nfsShare" "nfs"
