@@ -13,6 +13,12 @@ $ ./docker-do.sh rebuild mysql-server qiushihe/mysql-server ./mysql-server \
   -e 'MYSQL_SERVER_PASSWORD_2="lala2pass"'
 ```
 
+Also accepts environment variables:
+
+* `MYSQL_SERVER_NFS_HOST`
+* `MYSQL_SERVER_NFS_SHARE`
+* `MYSQL_SERVER_NFS_WAIT`
+
 ### Run:
 
 ```

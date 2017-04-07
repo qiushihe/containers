@@ -1,5 +1,15 @@
 version: "2"
 services:
+  nfs-server:
+    image: qiushihe/nfs-server
+    build: ./nfs-server
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - nfs-data:/exports
+    environment:
+      NFS_SERVER_SHARE_1: "lala1"
+      NFS_SERVER_SHARE_2: "lala2"
   domain-proxy:
     image: qiushihe/domain-proxy
     build: ./domain-proxy
@@ -15,16 +25,24 @@ services:
   minio-server-lala1:
     image: qiushihe/minio-server
     build: ./minio-server
-    volumes:
-      - ./volumes/lala1:/minio-data
+    cap_add:
+      - SYS_ADMIN
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey1"
       MINIO_SERVER_SECRET_KEY: "secretkey1"
+      MINIO_SERVER_NFS_HOST: "nfs-server"
+      MINIO_SERVER_NFS_SHARE: "lala1"
   minio-server-lala2:
     image: qiushihe/minio-server
     build: ./minio-server
-    volumes:
-      - ./volumes/lala2:/minio-data
+    cap_add:
+      - SYS_ADMIN
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey2"
       MINIO_SERVER_SECRET_KEY: "secretkey2"
+      MINIO_SERVER_NFS_HOST: "nfs-server"
+      MINIO_SERVER_NFS_SHARE: "lala2"
+
+volumes:
+  nfs-data:
+    driver: local

@@ -8,6 +8,12 @@ $ ./docker-do.sh rebuild minio-server qiushihe/minio-server ./minio-server \
   -e 'MINIO_SERVER_SECRET_KEY="secret-key"'
 ```
 
+Also accepts environment variables:
+
+* `MINIO_SERVER_NFS_HOST`
+* `MINIO_SERVER_NFS_SHARE`
+* `MINIO_SERVER_NFS_WAIT`
+
 ### Run:
 
 ```

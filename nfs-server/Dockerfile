@@ -1,11 +1,10 @@
-FROM ubuntu:xenial
+FROM alpine:3.5
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends netbase nfs-kernel-server \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apk --update upgrade \
+  && apk add bash nfs-utils \
+  && rm -rf /var/cache/apk/*
 
 RUN mkdir -p /exports
-
 VOLUME /exports
 
 EXPOSE 111/udp 2049/tcp

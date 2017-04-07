@@ -2,6 +2,18 @@
 
 echo "!!! Starting Minio Server"
 
+nfsHost=$MINIO_SERVER_NFS_HOST
+nfsShare=$MINIO_SERVER_NFS_SHARE
+
+if [ -n "$nfsHost" ] && [ -n "$nfsShare" ]; then
+  /utilities/mount-nfs-share.sh $nfsHost $nfsShare
+  rm -fr /mnt/$nfsShare/.minio.sys
+  echo "!!! Clear old /mnt/$nfsShare/.minio.sys"
+  rm /minio-data
+  ln -sf /mnt/$nfsShare /minio-data
+  echo "!!! Linked /mnt/$nfsShare to /minio-data"
+fi
+
 accessKey=$MINIO_SERVER_ACCESS_KEY
 secretKey=$MINIO_SERVER_SECRET_KEY
 

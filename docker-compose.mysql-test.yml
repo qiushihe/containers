@@ -1,0 +1,28 @@
+version: "2"
+services:
+  nfs-server:
+    image: qiushihe/nfs-server
+    build: ./nfs-server
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - nfs-data:/exports
+    environment:
+      NFS_SERVER_SHARE_1: "mysql"
+  mysql-server:
+    image: qiushihe/mysql-server
+    build: ./mysql-server
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_SERVER_ROOT_PASSWORD: "changeme"
+      MYSQL_SERVER_USER_1: "lala1"
+      MYSQL_SERVER_PASSWORD_1: "lala1pass"
+      MYSQL_SERVER_NFS_HOST: "nfs-server"
+      MYSQL_SERVER_NFS_SHARE: "mysql"
+
+volumes:
+  nfs-data:
+    driver: local
