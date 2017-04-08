@@ -12,7 +12,8 @@ Also accepts environment variables:
 
 * `MINIO_SERVER_NFS_HOST`
 * `MINIO_SERVER_NFS_SHARE`
-* `MINIO_SERVER_NFS_WAIT`
+
+... and when using NFS the `SYS_ADMIN` capability is required.
 
 ### Run:
 

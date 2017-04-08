@@ -17,7 +17,8 @@ Also accepts environment variables:
 
 * `MYSQL_SERVER_NFS_HOST`
 * `MYSQL_SERVER_NFS_SHARE`
-* `MYSQL_SERVER_NFS_WAIT`
+
+... and when using NFS the `SYS_ADMIN` capability is required.
 
 ### Run:
 
