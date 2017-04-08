@@ -1,5 +1,15 @@
 version: "2"
 services:
+  nfs-server:
+    image: qiushihe/nfs-server
+    build: ../nfs-server
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - nfs-data:/exports
+    environment:
+      NFS_SERVER_SHARE_1: "mysql"
+      NFS_SERVER_SHARE_2: "web1"
   domain-proxy:
     image: qiushihe/domain-proxy
     build: ../domain-proxy
@@ -10,30 +20,39 @@ services:
       - NET_ADMIN
     environment:
       DOMAIN_PROXY_FE_1: "lala1.com:80"
-      DOMAIN_PROXY_BE_1: "nginx-server-lala1:80"
+      DOMAIN_PROXY_BE_1: "web-server-web1:80"
       DOMAIN_PROXY_FE_2: "lala1.com:9000"
-      DOMAIN_PROXY_BE_2: "minio-server-lala1:9000"
+      DOMAIN_PROXY_BE_2: "minio-server-web1:9000"
   mysql-server:
     image: qiushihe/mysql-server
     build: ../mysql-server
-    volumes:
-      - ./volumes/mysql-server:/mysql-data
+    cap_add:
+      - SYS_ADMIN
     environment:
       MYSQL_SERVER_ROOT_PASSWORD: "changeme"
-      MYSQL_SERVER_USER_1: "lala1"
-      MYSQL_SERVER_PASSWORD_1: "lala1pass"
-  nginx-server-lala1:
-    image: qiushihe/nginx-server
-    build: ../nginx-server
-    volumes:
-      - ./volumes/lala1:/web-data
-    links:
-      - mysql-server
-  minio-server-lala1:
+      MYSQL_SERVER_USER_1: "web1"
+      MYSQL_SERVER_PASSWORD_1: "web1pass"
+      MYSQL_SERVER_NFS_HOST: "nfs-server"
+      MYSQL_SERVER_NFS_SHARE: "mysql"
+  web-server-web1:
+    image: qiushihe/apache-server
+    build: ../apache-server
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      APACHE_SERVER_NFS_HOST: "nfs-server"
+      APACHE_SERVER_NFS_SHARE: "web1"
+  minio-server-web1:
     image: qiushihe/minio-server
     build: ../minio-server
-    volumes:
-      - ./volumes/lala1:/minio-data
+    cap_add:
+      - SYS_ADMIN
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey1"
       MINIO_SERVER_SECRET_KEY: "secretkey1"
+      MINIO_SERVER_NFS_HOST: "nfs-server"
+      MINIO_SERVER_NFS_SHARE: "web1"
+
+volumes:
+  nfs-data:
+    driver: local
