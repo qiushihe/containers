@@ -3,7 +3,7 @@ FROM alpine:3.5
 # Install packages ================================================================================
 RUN apk --update upgrade \
   && apk add bash \
-  && apk add supervisor \
+  && apk add supervisor nfs-utils \
   && apk add nginx \
   && apk add php5-fpm \
     php5-mcrypt php5-soap php5-openssl php5-gmp php5-pdo_odbc php5-json \
@@ -14,6 +14,11 @@ RUN apk --update upgrade \
     php5-phar \
   && rm -rf /var/cache/apk/*
 
+# Utilities =======================================================================================
+RUN mkdir -p /utilities
+COPY src/utilities/* /utilities/
+RUN chmod +x /utilities/*
+
 # Supervisor ======================================================================================
 RUN mkdir -p /supervisor
 COPY src/supervisor/* /supervisor/
@@ -21,8 +26,8 @@ COPY src/supervisor/* /supervisor/
 # =================================================================================================
 
 # Web folder
-RUN rm -fr /web-data && mkdir -p /web-data/www
-RUN echo "<?php phpinfo(); ?>" > /web-data/www/index.php
+RUN mkdir /web-data.local \
+  && ln -sf /web-data.local /web-data
 VOLUME /web-data
 
 # Nginx config
