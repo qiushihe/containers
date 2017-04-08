@@ -3,7 +3,7 @@ FROM alpine:3.5
 # Install packages ================================================================================
 RUN apk --update upgrade \
   && apk add bash \
-  && apk add supervisor \
+  && apk add supervisor nfs-utils \
   && apk add apache2 apache2-utils apache2-proxy \
   && apk add php5-fpm \
     php5-mcrypt php5-soap php5-openssl php5-gmp php5-pdo_odbc php5-json \
@@ -26,17 +26,14 @@ RUN chmod +x /utilities/*
 # =================================================================================================
 
 # Server/Web root
-RUN rm -fr /var/www \
-  && mkdir /server-root \
-  && mkdir -p /web-data/www \
-  && ln -sf /web-data /server-root/web-data \
+RUN rm -fr /var/www
+RUN mkdir /server-root \
   && ln -sf /var/log/apache2 /server-root/log \
   && ln -sf /usr/lib/apache2 /server-root/modules \
   && ln -sf /run/apache2 /server-root/run
-
-RUN echo "<?php phpinfo(); ?>" > /web-data/www/index.php \
-  && /utilities/fix-web-data-permission.sh
-
+RUN mkdir /web-data.local \
+  && ln -sf /web-data.local /web-data \
+  && ln -sf /web-data /server-root/web-data
 VOLUME /web-data
 
 # Setup Apache

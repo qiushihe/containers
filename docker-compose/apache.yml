@@ -1,0 +1,25 @@
+version: "2"
+services:
+  nfs-server:
+    image: qiushihe/nfs-server
+    build: ../nfs-server
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - nfs-data:/exports
+    environment:
+      NFS_SERVER_SHARE_1: "web1"
+  web-server:
+    image: qiushihe/apache-server
+    build: ../apache-server
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "8080:80"
+    environment:
+      APACHE_SERVER_NFS_HOST: "nfs-server"
+      APACHE_SERVER_NFS_SHARE: "web1"
+
+volumes:
+  nfs-data:
+    driver: local
