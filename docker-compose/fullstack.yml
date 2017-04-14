@@ -40,6 +40,8 @@ services:
     cap_add:
       - SYS_ADMIN
     environment:
+      APACHE_SERVER_USER_ID: "8980"
+      APACHE_SERVER_GROUP_ID: "8981"
       APACHE_SERVER_NFS_HOST: "nfs-server"
       APACHE_SERVER_NFS_SHARE: "web1"
   minio-server-web1:
@@ -50,6 +52,8 @@ services:
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey1"
       MINIO_SERVER_SECRET_KEY: "secretkey1"
+      MINIO_SERVER_RUN_AS_USER_ID: "8980"
+      MINIO_SERVER_RUN_AS_GROUP_ID: "8981"
       MINIO_SERVER_NFS_HOST: "nfs-server"
       MINIO_SERVER_NFS_SHARE: "web1"
 
