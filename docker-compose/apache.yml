@@ -17,6 +17,8 @@ services:
     ports:
       - "8080:80"
     environment:
+      APACHE_SERVER_USER_ID: "8980"
+      APACHE_SERVER_GROUP_ID: "8981"
       APACHE_SERVER_NFS_HOST: "nfs-server"
       APACHE_SERVER_NFS_SHARE: "web1"
 

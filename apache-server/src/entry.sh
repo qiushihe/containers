@@ -12,6 +12,13 @@ if [ -n "$nfsHost" ] && [ -n "$nfsShare" ]; then
   echo "!!! Linked /mnt/$nfsShare to /web-data"
 fi
 
+# Ensure user/group ID are set according to configuration
+apacheUid=$APACHE_SERVER_USER_ID
+apacheGid=$APACHE_SERVER_GROUP_ID
+if [ -n "$apacheUid" ] && [ -n "$apacheGid" ]; then
+  /utilities/ensure-user-group-ids.sh apache apache $apacheUid $apacheGid
+fi
+
 # Ensure www folder exists
 mkdir -p /web-data/www
 
