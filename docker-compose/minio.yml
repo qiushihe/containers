@@ -30,6 +30,8 @@ services:
     environment:
       MINIO_SERVER_ACCESS_KEY: "accesskey1"
       MINIO_SERVER_SECRET_KEY: "secretkey1"
+      MINIO_SERVER_RUN_AS_USER_ID: "8980"
+      MINIO_SERVER_RUN_AS_GROUP_ID: "8981"
       MINIO_SERVER_NFS_HOST: "nfs-server"
       MINIO_SERVER_NFS_SHARE: "lala1"
   minio-server-lala2:

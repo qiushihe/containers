@@ -1,7 +1,7 @@
 FROM alpine:3.5
 
 RUN apk --update upgrade \
-  && apk add bash nfs-utils
+  && apk add bash nfs-utils shadow sudo
 
 # -------------------------------------------------------------------------------------------------
 # Install glibc
