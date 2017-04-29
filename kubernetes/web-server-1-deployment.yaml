@@ -1,16 +1,28 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nginx-server-1
+  name: web-server-1
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        service: nginx-server-1
+        service: web-server-1
     spec:
       containers:
-      - image: qiushihe/nginx-server:1.0.0
-        name: nginx-server-1
+      - image: qiushihe/apache-server:2017-04-28
+        name: web-server-1
+        ports:
+        - containerPort: 80
         securityContext:
-          privileged: true
+          capabilities:
+            add: [SYS_ADMIN]
+        env:
+        - name: APACHE_SERVER_USER_ID
+          value: "8980"
+        - name: APACHE_SERVER_GROUP_ID
+          value: "8981"
+        - name: APACHE_SERVER_NFS_HOST
+          value: "nfs-server"
+        - name: APACHE_SERVER_NFS_SHARE
+          value: "web1"

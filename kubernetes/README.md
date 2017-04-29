@@ -1,10 +1,21 @@
-## Minikube
+# Minikube
 
-$ ./docker-do.sh rebuild nginx-server qiushihe/nginx-server nginx-server
-$ ./docker-do.sh rebuild web-proxy qiushihe/web-proxy web-proxy
+### Setup NFS server
 
-$ kubectl create -f nginx-server-1-deployment.yaml
-$ kubectl create -f nginx-server-1-service.yaml
+```
+$ kubectl create -f kubernetes/nfs-server-deployment.yaml
+$ kubectl create -f kubernetes/nfs-server-service.yaml
+```
+
+### Setup web server
+
+```
+$ kubectl create -f kubernetes/web-server-1-deployment.yaml
+$ kubectl create -f kubernetes/web-server-1-service.yaml
+```
+
+---------------------------------------------------------------------------------------------------
+
 $ kubectl create -f web-proxy-deployment.yaml
 $ kubectl create -f web-proxy-service.yaml
 
