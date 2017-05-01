@@ -14,6 +14,13 @@ $ kubectl create -f kubernetes/web-server-web1-deployment.yaml
 $ kubectl create -f kubernetes/web-server-web1-service.yaml
 ```
 
+### Setup minio server
+
+```
+$ kubectl create -f kubernetes/minio-server-web1-deployment.yaml
+$ kubectl create -f kubernetes/minio-server-web1-service.yaml
+```
+
 ### Setup domain proxy
 
 $ kubectl create -f kubernetes/domain-proxy-deployment.yaml
