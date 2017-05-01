@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: domain-proxy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: domain-proxy
+    spec:
+      containers:
+      - name: domain-proxy
+        image: qiushihe/domain-proxy:2017-04-30.2
+        ports:
+          - name: 80-tcp
+            containerPort: 80
+            protocol: TCP
+          - name: 9000-tcp
+            containerPort: 9000
+            protocol: TCP
+        securityContext:
+          capabilities:
+            add: [NET_ADMIN]
+        env:
+        - name: DOMAIN_PROXY_FE_1
+          value: "lala1.com:80"
+        - name: DOMAIN_PROXY_BE_1
+          value: "web-server-web1.default.svc.cluster.local:80"
+        - name: DOMAIN_PROXY_FE_2
+          value: "lala1.com:9000"
+        - name: DOMAIN_PROXY_BE_2
+          value: "minio-server-web1.default.svc.cluster.local:9000"

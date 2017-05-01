@@ -1,17 +1,17 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: web-server-1
+  name: web-server-web1
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        service: web-server-1
+        service: web-server-web1
     spec:
       containers:
       - image: qiushihe/apache-server:2017-04-28
-        name: web-server-1
+        name: web-server-web1
         ports:
         - containerPort: 80
         securityContext:
