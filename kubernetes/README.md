@@ -7,6 +7,13 @@ $ kubectl create -f kubernetes/nfs-server-deployment.yaml
 $ kubectl create -f kubernetes/nfs-server-service.yaml
 ```
 
+### Setup MySQL server
+
+```
+$ kubectl create -f kubernetes/mysql-server-deployment.yaml
+$ kubectl create -f kubernetes/mysql-server-service.yaml
+```
+
 ### Setup web server
 
 ```
