@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: minio-server-web1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: minio-server-web1
+    spec:
+      containers:
+      - image: qiushihe/minio-server:2017-04-30
+        name: minio-server-web1
+        ports:
+        - containerPort: 9000
+        securityContext:
+          capabilities:
+            add: [SYS_ADMIN]
+        env:
+        - name: MINIO_SERVER_ACCESS_KEY
+          value: "accesskey1"
+        - name: MINIO_SERVER_SECRET_KEY
+          value: "secretkey1"
+        - name: MINIO_SERVER_RUN_AS_USER_ID
+          value: "8980"
+        - name: MINIO_SERVER_RUN_AS_GROUP_ID
+          value: "8981"
+        - name: MINIO_SERVER_NFS_HOST
+          value: "nfs-server"
+        - name: MINIO_SERVER_NFS_SHARE
+          value: "web1"

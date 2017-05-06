@@ -25,7 +25,7 @@ server {
   server_name $feHost;
   $sslOptions
   location ~ {
-    resolver 127.0.0.1;
+    resolver 127.0.0.1 valid=30s ipv6=off;
     set \$destination http://$beHost:$bePort;
     proxy_pass \$destination;
     proxy_pass_header Authorization;

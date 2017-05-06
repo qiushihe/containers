@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nfs-server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: nfs-server
+    spec:
+      containers:
+      - image: qiushihe/nfs-server:2017-04-07
+        name: nfs-server
+        ports:
+          - name: 111-udp
+            containerPort: 111
+            protocol: UDP
+          - name: 2049-tcp
+            containerPort: 2049
+            protocol: TCP
+        securityContext:
+          capabilities:
+            add: [SYS_ADMIN]
+        volumeMounts:
+        - mountPath: /exports
+          name: nfs-data
+        env:
+        - name: NFS_SERVER_SHARE_1
+          value: "mysql"
+        - name: NFS_SERVER_SHARE_2
+          value: "web1"
+      volumes:
+      - name: nfs-data
+        emptyDir: {}

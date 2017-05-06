@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql-server
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: mysql-server
+    spec:
+      containers:
+      - name: mysql-server
+        image: qiushihe/mysql-server:2017-04-30
+        ports:
+          - containerPort: 3306
+        securityContext:
+          capabilities:
+            add: [SYS_ADMIN]
+        env:
+        - name: MYSQL_SERVER_ROOT_PASSWORD
+          value: "changeme"
+        - name: MYSQL_SERVER_USER_1
+          value: "web1"
+        - name: MYSQL_SERVER_PASSWORD_1
+          value: "web1pass"
+        - name: MYSQL_SERVER_NFS_HOST
+          value: "nfs-server"
+        - name: MYSQL_SERVER_NFS_SHARE
+          value: "mysql"
