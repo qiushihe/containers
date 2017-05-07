@@ -31,9 +31,9 @@ services:
     image: qiushihe/nginx-server
     build: ../nginx-server
     volumes:
-      - ./volumes/lala1:/web-data
+      - ../volumes/lala1:/web-data
   nginx-server-2:
     image: qiushihe/nginx-server
     build: ../nginx-server
     volumes:
-      - ./volumes/lala2:/web-data
+      - ../volumes/lala2:/web-data
