@@ -1,8 +1,21 @@
 logLevel = "DEBUG"
-defaultEntryPoints = ["http"]
+defaultEntryPoints = ["http", "https"]
+
 [entryPoints]
   [entryPoints.http]
   address = ":80"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+[acme]
+email = "test@traefik-server.local"
+storage = "/traefik-acme/account"
+entryPoint = "https"
+OnHostRule = true
+onDemand = true
+caServer = "http://boulder-server:4000/directory"
+acmeLogging = true
 
 [web]
 address = ":8080"

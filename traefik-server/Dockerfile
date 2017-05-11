@@ -20,6 +20,8 @@ RUN mv /traefik_linux-amd64 /usr/local/bin/traefik
 # Setup Traefik
 RUN rm -fr /traefik && mkdir /traefik
 COPY src/traefik/* /traefik/
+RUN rm -fr /traefik-acme && mkdir /traefik-acme
+VOLUME /traefik-acme
 
 EXPOSE 80 8080 443
 
