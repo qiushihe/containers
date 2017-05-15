@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WIP_RULES=/traefik-rules.toml.tmp
-rm $WIP_RULES
+rm -f $WIP_RULES
 
 echo "[backends]" | tee -a $WIP_RULES
 TRAEFIK_SERVER_BES=$(compgen -A variable | grep -e "^TRAEFIK_SERVER_BE_[^_]\+$")

@@ -14,7 +14,7 @@ storage = "/traefik-acme/account"
 entryPoint = "https"
 OnHostRule = true
 onDemand = true
-caServer = "http://boulder-server:4000/directory"
+caServer = "http://node-acme-server/directory"
 acmeLogging = true
 
 [web]

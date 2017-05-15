@@ -1,13 +1,16 @@
 version: "2"
 services:
-  boulder-server:
-    image: qiushihe/boulder-server:2017-03-25
-    depends_on:
-      - traefik-server
-    environment:
-      BOULDER_SERVER_FAKE_DNS_HOST: "traefik-server"
-      BOULDER_SERVER_FAKE_DNS_DOMAIN_1: "lala1.com"
-      BOULDER_SERVER_FAKE_DNS_DOMAIN_2: "lala2.com"
+  # boulder-server:
+  #   image: qiushihe/boulder-server:2017-03-25
+  #   depends_on:
+  #     - traefik-server
+  #   environment:
+  #     BOULDER_SERVER_FAKE_DNS_HOST: "traefik-server"
+  #     BOULDER_SERVER_FAKE_DNS_DOMAIN_1: "lala1.com"
+  #     BOULDER_SERVER_FAKE_DNS_DOMAIN_2: "lala2.com"
+  node-acme-server:
+    image: qiushihe/node-acme-server
+    build: ../node-acme-server
   traefik-server:
     image: qiushihe/traefik-server
     build: ../traefik-server
