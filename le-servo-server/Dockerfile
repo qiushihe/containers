@@ -8,7 +8,7 @@ RUN apk --update upgrade \
 RUN rm -rf /var/cache/apk/*
 
 # Setup LE-Servo
-ENV LE_SERVO_CHECKOUT 7925afa77eaafd423be49fc42f47070dd920ccf9
+ENV LE_SERVO_CHECKOUT badba45cc836f57c7e229ac0cc16f098c001a2e1
 RUN rm -fr /le-servo \
   && git clone https://github.com/qiushihe/le-servo.git /le-servo \
   && cd /le-servo \
