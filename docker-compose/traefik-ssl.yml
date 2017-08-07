@@ -1,16 +1,11 @@
 version: "2"
 services:
-  # boulder-server:
-  #   image: qiushihe/boulder-server:2017-03-25
-  #   depends_on:
-  #     - traefik-server
-  #   environment:
-  #     BOULDER_SERVER_FAKE_DNS_HOST: "traefik-server"
-  #     BOULDER_SERVER_FAKE_DNS_DOMAIN_1: "lala1.com"
-  #     BOULDER_SERVER_FAKE_DNS_DOMAIN_2: "lala2.com"
   le-servo-server:
     image: qiushihe/le-servo-server
     build: ../le-servo-server
+    links:
+      - "traefik-server:lala1.com"
+      - "traefik-server:lala2.com"
     environment:
       LE_SERVO_SERVER_HOST_NAME: "le-servo-server"
       LE_SERVO_SERVER_PORT: "80"

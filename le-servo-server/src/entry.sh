@@ -11,12 +11,12 @@ leServoNonceBufferSize="${leServoNonceBufferSize#\"}"
 
 cd /le-servo
 
-# echo "!!! Starting LE-Servo Server"
-# LE_SERVO_HOST_NAME=$leServoHostname \
-# LE_SERVO_PATH_PREFIX=$leServoPathPrefix \
-# LE_SERVO_PORT=$leServoPort \
-# LE_SERVO_NONCE_BUFFER_SIZE=$leServoNonceBufferSize \
-# npm run server
+echo "!!! Starting LE-Servo Server"
+LE_SERVO_HOST_NAME=$leServoHostname \
+LE_SERVO_PATH_PREFIX=$leServoPathPrefix \
+LE_SERVO_PORT=$leServoPort \
+LE_SERVO_NONCE_BUFFER_SIZE=$leServoNonceBufferSize \
+npm run server
 
 while true; do
   sleep 5
