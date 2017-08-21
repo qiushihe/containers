@@ -12,6 +12,10 @@ leServoDbEngine="${LE_SERVO_SERVER_DB_ENGINE%\"}"
 leServoDbEngine="${leServoDbEngine#\"}"
 leServoDbConnectionUrl="${LE_SERVO_SERVER_DB_CONNECTION_URL%\"}"
 leServoDbConnectionUrl="${leServoDbConnectionUrl#\"}"
+leServoRootCertPem="${%LE_SERVO_SERVER_ROOT_CERT_PEM\"}"
+leServoRootCertPem="${#leServoRootCertPem\"}"
+leServoRootCertKey="${%LE_SERVO_SERVER_ROOT_CERT_KEY\"}"
+leServoRootCertKey="${#leServoRootCertKey\"}"
 
 cd /le-servo
 
@@ -22,8 +26,6 @@ LE_SERVO_PORT=$leServoPort \
 LE_SERVO_NONCE_BUFFER_SIZE=$leServoNonceBufferSize \
 LE_SERVO_DB_ENGINE=$leServoDbEngine \
 LE_SERVO_DB_CONNECTION_URL=$leServoDbConnectionUrl \
+LE_SERVO_ROOT_CERT_PEM=$leServoRootCertPem \
+LE_SERVO_ROOT_CERT_KEY=$leServoRootCertKey \
 ./run-with-db.sh v1-server
-
-while true; do
-  sleep 5
-done

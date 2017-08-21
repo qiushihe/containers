@@ -9,9 +9,18 @@ echo "!!! Rebuild Traefik Rules"
 echo "!!! Set Traefik CA Server URL to $traefikServerCaServer"
 sed -i "s|TRAEFIK-ACME-CA-SERVER-URL|${traefikServerCaServer}|g" /traefik/traefik.toml
 
+echo "!!! Making sure ACME server is available"
+while true; do
+  directoryResult=`curl $traefikServerCaServer`
+  if [ -z "$directoryResult" ]; then
+    echo "!!! Still waiting for $traefikServerCaServer ..."
+  else
+    break;
+  fi
+  sleep 5
+done
+
 echo "!!! Starting Traefik Server"
-# TODO: Implement a TCP check instead of waiting for a number of seconds
-sleep 5
 traefik -c /traefik/traefik.toml
 
 while true; do
