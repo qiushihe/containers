@@ -12,10 +12,10 @@ leServoDbEngine="${LE_SERVO_SERVER_DB_ENGINE%\"}"
 leServoDbEngine="${leServoDbEngine#\"}"
 leServoDbConnectionUrl="${LE_SERVO_SERVER_DB_CONNECTION_URL%\"}"
 leServoDbConnectionUrl="${leServoDbConnectionUrl#\"}"
-leServoRootCertPem="${%LE_SERVO_SERVER_ROOT_CERT_PEM\"}"
-leServoRootCertPem="${#leServoRootCertPem\"}"
-leServoRootCertKey="${%LE_SERVO_SERVER_ROOT_CERT_KEY\"}"
-leServoRootCertKey="${#leServoRootCertKey\"}"
+leServoRootCertPem="${LE_SERVO_SERVER_ROOT_CERT_PEM%\"}"
+leServoRootCertPem="${leServoRootCertPem#\"}"
+leServoRootCertKey="${LE_SERVO_SERVER_ROOT_CERT_KEY%\"}"
+leServoRootCertKey="${leServoRootCertKey#\"}"
 
 cd /le-servo
 
