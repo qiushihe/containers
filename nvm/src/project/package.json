@@ -1,0 +1,9 @@
+{
+  "name": "dummy-project",
+  "description": "A dummy project",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js"
+  }
+}
