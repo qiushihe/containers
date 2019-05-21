@@ -1,0 +1,25 @@
+logLevel = "DEBUG"
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+[acme]
+email = "test@traefik-server.local"
+storage = "/traefik-acme/account"
+entryPoint = "https"
+OnHostRule = true
+onDemand = true
+caServer = "TRAEFIK-ACME-CA-SERVER-URL"
+acmeLogging = true
+
+[web]
+address = ":8080"
+
+[file]
+filename = "/traefik/rules.toml"
+watch = true

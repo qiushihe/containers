@@ -1,0 +1,26 @@
+version: "2"
+services:
+  traefik-server:
+    image: qiushihe/traefik-server
+    build: ../traefik-server
+    ports:
+      - "8888:8080"
+      - "8080:80"
+      - "8443:443"
+    cap_add:
+      - NET_ADMIN
+    environment:
+      TRAEFIK_SERVER_FE_1: "Host:lala1.com"
+      TRAEFIK_SERVER_BE_1: "http://web-server-1:80"
+      TRAEFIK_SERVER_FE_2: "Host:lala2.com"
+      TRAEFIK_SERVER_BE_2: "http://web-server-2:80"
+  web-server-1:
+    image: qiushihe/apache-server
+    build: ../apache-server
+    volumes:
+      - ../volumes/lala1:/web-data
+  web-server-2:
+    image: qiushihe/nginx-server
+    build: ../nginx-server
+    volumes:
+      - ../volumes/lala2:/web-data
