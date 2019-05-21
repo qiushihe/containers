@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# apk update
+# apk add certbot
+
+# rm -fr /etc/letsencrypt && certbot certonly --debug -vvv -n --register-unsafely-without-email --server http://le-servo-server/directory --webroot -w /web-data/www -d lala1.com
+
 echo "!!! Starting nginx server"
 
 nfsHost=$NGINX_SERVER_NFS_HOST

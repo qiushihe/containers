@@ -28,4 +28,4 @@ LE_SERVO_DB_ENGINE=$leServoDbEngine \
 LE_SERVO_DB_CONNECTION_URL=$leServoDbConnectionUrl \
 LE_SERVO_ROOT_CERT_PEM=$leServoRootCertPem \
 LE_SERVO_ROOT_CERT_KEY=$leServoRootCertKey \
-./run-with-db.sh v1-server
+./run.sh v1-server
