@@ -1,0 +1,13 @@
+logLevel = "DEBUG"
+defaultEntryPoints = ["http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+
+[web]
+address = ":8080"
+
+[file]
+filename = "/traefik/rules.toml"
+watch = true
