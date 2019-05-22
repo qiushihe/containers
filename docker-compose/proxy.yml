@@ -21,9 +21,9 @@ services:
     image: qiushihe/apache-server
     build: ../apache-server
     volumes:
-      - ../volumes/lala1:/web-data
+      - ./volumes/lala1:/web-data
   web-server-2:
     image: qiushihe/nginx-server
     build: ../nginx-server
     volumes:
-      - ../volumes/lala2:/web-data
+      - ./volumes/lala2:/web-data

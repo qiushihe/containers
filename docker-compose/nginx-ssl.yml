@@ -12,7 +12,7 @@ services:
     image: qiushihe/nginx-server
     build: ../nginx-server
     volumes:
-      - ../volumes/lala1:/web-data
+      - ./volumes/lala1:/web-data
     ports:
       - "8080:80"
       - "8443:443"
